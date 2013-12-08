@@ -11,3 +11,9 @@
 *.lai
 *.la
 *.a
+
+# Build directories
+*build/
+
+# Vim swp files
+*.swp

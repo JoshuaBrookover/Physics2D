@@ -1,0 +1,12 @@
+This software utilizies the following libraries:
+
+CGUL https://github.com/Zethes/CGUL
+Copyright (C) 2012-2014, Joshua Brookover and Amber Thrall
+
+The OpenGL Extension Wrangler Library http://glew.sourceforge.net/
+Copyright (C) 2002-2007, Milan Ikits <milan ikits[]ieee org>
+Copyright (C) 2002-2007, Marcelo E. Magallon <mmagallo[]debian org>
+Copyright (C) 2002, Lev Povalahev
+All rights reserved.
+
+The libraries above are released under absolutely no warranty.
