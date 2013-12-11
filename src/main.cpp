@@ -3,7 +3,7 @@
 
 int main()
 {
-    std::cout << "Powered by CGUL v" << CGUL::GetCGULVersion() << std::endl;
+    std::cout << "Powered by CGUL v" << CGUL::GetCGULVersion() << " (Compiled with: " << CGUL::GetCGULCompilerName() << ")" << std::endl;
 
     StateMachine stateMachine;
     stateMachine.Initialize();

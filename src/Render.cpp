@@ -169,7 +169,6 @@ void Render::MakeLine()
 
 Render::Render(CGUL::Window* window) :
     window(window),
-    viewport(0, 0, 800, 600),
     screenSpace(0, 0, 800, 600)
 {
     context.Create(window);
@@ -185,7 +184,7 @@ void Render::Update(State* state, CGUL::Float32 deltaTime)
 {
     using namespace CGUL;
 
-    context.Viewport(viewport.x, viewport.y, viewport.z, viewport.w);
+    context.Viewport(0, 0, window->GetWidth(), window->GetHeight());
     context.Clear(GL_COLOR_BUFFER_BIT);
 
     GL::UseProgram(shaderProgram);
@@ -207,11 +206,6 @@ void Render::Reset()
 void Render::SetClearColor(const CGUL::Color& color)
 {
     context.ClearColor(color);
-}
-
-void Render::SetViewport(const CGUL::SRect32& viewport)
-{
-    this->viewport = viewport;
 }
 
 void Render::SetScreenSpace(const CGUL::Vector4& screenSpace)

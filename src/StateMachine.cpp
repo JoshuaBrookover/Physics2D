@@ -17,7 +17,9 @@ void StateMachine::MouseMoveEvent(const CGUL::WindowMouseMoveEvent& event)
 {
     if (stateMachine != NULL)
     {
+        CGUL::Vector2 relativeSize(800.0f / stateMachine->window.GetWidth(), 600.0f / stateMachine->window.GetHeight());
         stateMachine->mousePosition = event.location;
+        stateMachine->mousePosition = CGUL::SCoord32(stateMachine->mousePosition.x * relativeSize.x, stateMachine->mousePosition.y * relativeSize.y);
     }
 }
 
