@@ -3,6 +3,8 @@
 
 int main()
 {
+    std::cout << "Powered by CGUL v" << CGUL::GetCGULVersion() << std::endl;
+
     StateMachine stateMachine;
     stateMachine.Initialize();
     stateMachine.ChangeState(new TestState());

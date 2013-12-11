@@ -2,11 +2,31 @@
 #include "State.hpp"
 #include "Render.hpp"
 
+Render* render;
+StateMachine* stateMachine;
+
+void StateMachine::KeyButtonEvent(const CGUL::WindowKeyButtonEvent& event)
+{
+}
+
+void StateMachine::MouseButtonEvent(const CGUL::WindowMouseButtonEvent& event)
+{
+}
+
+void StateMachine::MouseMoveEvent(const CGUL::WindowMouseMoveEvent& event)
+{
+    if (stateMachine != NULL)
+    {
+        stateMachine->mousePosition = event.location;
+    }
+}
+
 StateMachine::StateMachine() :
     currentState(NULL),
-    queuedState(NULL),
-    render(NULL)
+    queuedState(NULL)
 {
+    render = NULL;
+    stateMachine = this;
 }
 
 StateMachine::~StateMachine()
@@ -25,6 +45,10 @@ void StateMachine::Initialize()
     style.size = CGUL::UCoord32(800, 600);
     style.backgroundColor = CGUL::Colors::black;
     window.Create(style);
+
+    window.onKeyButton += KeyButtonEvent;
+    window.onMouseButton += MouseButtonEvent;
+    window.onMouseMove += MouseMoveEvent;
 
     render = new Render(&window);
 
@@ -63,11 +87,7 @@ void StateMachine::Update()
     }
     CGUL::Float32 deltaTime = timer.GetDeltaTime();
     CGUL::Window::Update();
-    if (currentState != NULL)
-    {
-        currentState->Update(deltaTime);
-    }
-    render->Update(currentState);
+    render->Update(currentState, deltaTime);
 }
 
 void StateMachine::Reset()
@@ -83,4 +103,9 @@ void StateMachine::Exit()
         currentState->Exit();
     }
     window.Close();
+}
+
+CGUL::SCoord32 StateMachine::GetMousePosition() const
+{
+    return mousePosition;
 }

@@ -23,15 +23,7 @@ void Render::MakeShader()
     "{\n"
     "    if (positionArray == 1)\n"
     "    {\n"
-    "        //gl_Position = (orthoMatrix * modelMatrix) * vec4(positions[int(vertPosition.x)], 0.0, 1.0);\n"
-    "        if (vertPosition.x < 0.5)\n"
-    "        {\n"
-    "            gl_Position = (orthoMatrix * modelMatrix) * vec4(0.0, 0.0, 0.0, 1.0);\n"
-    "        }\n"
-    "        else\n"
-    "        {\n"
-    "            gl_Position = (orthoMatrix * modelMatrix) * vec4(100.0, 100.0, 0.0, 1.0);\n"
-    "        }\n"
+    "        gl_Position = (orthoMatrix * modelMatrix) * vec4(positions[int(vertPosition.x)], 0.0, 1.0);\n"
     "    }\n"
     "    else\n"
     "    {\n"
@@ -102,7 +94,7 @@ void Render::MakeBox()
     using namespace CGUL;
 
     // Setup the buffer data
-    Vector2 boxPositions[] = { Vector2(0, 0), Vector2(0, 1), Vector2(1, 1), Vector2(1, 0) };
+    Vector2 boxPositions[] = { Vector2(-0.5f, -0.5f), Vector2(-0.5f, 0.5f), Vector2(0.5f, 0.5f), Vector2(0.5f, -0.5f) };
 
     // Create the vertex array object
     GL::GenVertexArrays(1, &vertexArrayBox);
@@ -189,7 +181,7 @@ Render::Render(CGUL::Window* window) :
     MakeLine();
 }
 
-void Render::Update(const State* state)
+void Render::Update(State* state, CGUL::Float32 deltaTime)
 {
     using namespace CGUL;
 
@@ -201,7 +193,7 @@ void Render::Update(const State* state)
 
     if (state != NULL)
     {
-        state->Draw();
+        state->Update(deltaTime);
     }
     GL::UseProgram(0);
     context.SwapBuffers();
@@ -231,8 +223,33 @@ void Render::Box(const CGUL::Vector2& position, const CGUL::Vector2& size, const
 {
     using namespace CGUL;
 
+    if (doNotDraw)
+    {
+        return;
+    }
+
     Matrix model;
     model = model * Matrix::MakeScaling(size);
+    model = model * Matrix::MakeTranslation(position);
+    GL::UniformMatrix4fv(GL::GetUniformLocation(shaderProgram, "modelMatrix"), 1, false, model.GetData());
+    GL::Uniform4f(GL::GetUniformLocation(shaderProgram, "color"), color);
+    GL::BindVertexArray(vertexArrayBox);
+    GL::DrawArrays(GL_QUADS, 0, 4);
+    GL::BindVertexArray(0);
+}
+
+void Render::Box(const CGUL::Vector2& position, const CGUL::Vector2& size, CGUL::Float32 orientation, const CGUL::Color& color)
+{
+    using namespace CGUL;
+
+    if (doNotDraw)
+    {
+        return;
+    }
+
+    Matrix model;
+    model = model * Matrix::MakeScaling(size);
+    model = model * Matrix::MakeRotation(orientation);
     model = model * Matrix::MakeTranslation(position);
     GL::UniformMatrix4fv(GL::GetUniformLocation(shaderProgram, "modelMatrix"), 1, false, model.GetData());
     GL::Uniform4f(GL::GetUniformLocation(shaderProgram, "color"), color);
@@ -244,6 +261,11 @@ void Render::Box(const CGUL::Vector2& position, const CGUL::Vector2& size, const
 void Render::Circle(const CGUL::Vector2& position, CGUL::Float32 radius, const CGUL::Color& color)
 {
     using namespace CGUL;
+
+    if (doNotDraw)
+    {
+        return;
+    }
 
     Matrix model;
     model = model * Matrix::MakeScaling(Vector2(radius, radius));
@@ -259,6 +281,11 @@ void Render::Line(const CGUL::Vector2& start, const CGUL::Vector2& end, const CG
 {
     using namespace CGUL;
 
+    if (doNotDraw)
+    {
+        return;
+    }
+
     Matrix model = Matrix::Identity();
     GL::UniformMatrix4fv(GL::GetUniformLocation(shaderProgram, "modelMatrix"), 1, false, model.GetData());
     GL::Uniform4f(GL::GetUniformLocation(shaderProgram, "color"), color);
@@ -269,4 +296,9 @@ void Render::Line(const CGUL::Vector2& start, const CGUL::Vector2& end, const CG
     GL::DrawArrays(GL_LINES, 0, 2);
     GL::BindVertexArray(0);
     GL::Uniform1i(GL::GetUniformLocation(shaderProgram, "positionArray"), 0);
+}
+
+void Render::SetDoNotDraw(CGUL::Boolean draw)
+{
+    doNotDraw = draw;
 }

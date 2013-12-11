@@ -18,6 +18,5 @@ public:
 
     virtual void Enter() = 0;
     virtual void Update(CGUL::Float32 deltaTime) = 0;
-    virtual void Draw() const = 0;
     virtual void Exit() = 0;
 };
