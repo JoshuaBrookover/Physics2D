@@ -51,38 +51,6 @@ void TestState::Update(CGUL::Float32 deltaTime)
     box2.Draw();
 
     box1.CollidingOrientedBox(box2);
-
-    CGUL::Vector2 coords[] =
-    {
-        CGUL::Vector2(-1, -1),
-        CGUL::Vector2(-1,  1),
-        CGUL::Vector2( 1, -1),
-        CGUL::Vector2( 1,  1)
-    };
-
-    CGUL::Matrix world;
-    world = world * CGUL::Matrix::MakeRotation(timer);
-    world = world * CGUL::Matrix::MakeScaling(CGUL::Vector2(100, 100));
-    world = world * CGUL::Matrix::MakeTranslation(CGUL::Vector2(150, 150));
-
-    static bool first = true;
-    if (first)
-    {
-        std::cout << world << std::endl;
-    }
-    for (CGUL::UInt32 i = 0; i < 4; i++)
-    {
-        CGUL::Vector2 point = coords[i];
-        point = point * world;
-
-        render->Line(point, point + CGUL::Vector2(1, 1), CGUL::Colors::yellow);
-
-        if (first)
-        {
-            std::cout << point << std::endl;
-        }
-    }
-    first = false;
 }
 
 void TestState::Exit()
