@@ -6,8 +6,8 @@
 
 class TestState : public State
 {
-    AxisAlignedBox box1;
-    AxisAlignedBox box2;
+    OrientedBox box1;
+    OrientedBox box2;
 public:
     TestState();
     ~TestState();

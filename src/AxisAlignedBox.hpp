@@ -1,12 +1,11 @@
 #pragma once
 #include <CGUL.hpp>
+#include "Collision.hpp"
 #include "Render.hpp"
 
 extern Render* render;
 
-class OrientedBox;
-
-struct AxisAlignedBox
+struct AxisAlignedBox : public Collision
 {
     CGUL::Color color;
     CGUL::Vector2 position;
@@ -20,6 +19,9 @@ struct AxisAlignedBox
 
     CGUL::Vector2 GetPosition() const;
     CGUL::Vector2 GetExtents() const;
+
+    void ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const;
+    bool CollidingOnAxis(const Collision& other, const CGUL::Vector2& axis) const;
 
     bool CollidingAxisAlignedBox(const AxisAlignedBox& other) const;
     bool CollidingOrientedBox(const OrientedBox& other) const;

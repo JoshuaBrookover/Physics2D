@@ -87,9 +87,9 @@ void StateMachine::Update()
         }
         queuedState = NULL;
     }
-    CGUL::Float32 deltaTime = timer.GetDeltaTime();
+    CGUL::Float64 deltaTime = timer.GetDeltaTime();
     CGUL::Window::Update();
-    render->Update(currentState, deltaTime);
+    render->Update(currentState, (CGUL::Float32)deltaTime);
 }
 
 void StateMachine::Reset()

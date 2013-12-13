@@ -15,7 +15,6 @@ class Render
     CGUL::Window* window;
     CGUL::OpenGL::Context context;
 
-    CGUL::SRect32 viewport;
     CGUL::Vector4 screenSpace;
 
     bool doNotDraw;
@@ -31,7 +30,6 @@ public:
     void Reset();
 
     void SetClearColor(const CGUL::Color& color);
-    void SetViewport(const CGUL::SRect32& viewport);
     void SetScreenSpace(const CGUL::Vector4& screenSpace);
 
     void Box(const CGUL::Vector2& position, const CGUL::Vector2& size, const CGUL::Color& color);
