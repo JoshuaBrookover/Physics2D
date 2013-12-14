@@ -1,5 +1,8 @@
 #include "AxisAlignedBox.hpp"
 
+#include "Circle.hpp"
+#include "OrientedBox.hpp"
+
 AxisAlignedBox::AxisAlignedBox() :
     Collision(Collision::AXIS_ALIGNED_BOX),
     color(0, 0, 0)
@@ -43,21 +46,21 @@ bool AxisAlignedBox::CollidingOnAxis(const Collision& other, const CGUL::Vector2
     return false;
 }
 
+bool AxisAlignedBox::CollidingCircle(const Circle& other) const
+{
+    // TODO
+    return false;
+}
+
 bool AxisAlignedBox::CollidingAxisAlignedBox(const AxisAlignedBox& other) const
 {
-    render->Line(position, other.position, CGUL::Colors::red);
-
-    CGUL::Vector2 difference = position - other.position;
-    difference.x = CGUL::Math::Abs(difference.x);
-    difference.y = CGUL::Math::Abs(difference.y);
-    CGUL::Vector2 combinedExtents = (extents + other.extents) / 2;
-
-    return (difference.x <= combinedExtents.x && difference.y <= combinedExtents.y);
+    return CheckAxisAlignedBoxAndAxisAlignedBox(*this, other);
 }
 
 bool AxisAlignedBox::CollidingOrientedBox(const OrientedBox& other) const
 {
-    return false; // TODO
+    // TODO
+    return false;
 }
 
 void AxisAlignedBox::Draw() const

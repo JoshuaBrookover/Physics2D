@@ -14,6 +14,7 @@ add_executable(physics
     src/Collision.cpp
     src/AxisAlignedBox.cpp
     src/OrientedBox.cpp
+    src/Circle.cpp
 )
 target_link_libraries(physics ${CGUL_LIBRARIES})
 cgul_bake_rpath(physics "$ORIGIN")

@@ -23,6 +23,7 @@ struct AxisAlignedBox : public Collision
     void ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const;
     bool CollidingOnAxis(const Collision& other, const CGUL::Vector2& axis) const;
 
+    bool CollidingCircle(const Circle& other) const;
     bool CollidingAxisAlignedBox(const AxisAlignedBox& other) const;
     bool CollidingOrientedBox(const OrientedBox& other) const;
 

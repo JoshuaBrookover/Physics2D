@@ -5,23 +5,20 @@
 
 extern Render* render;
 
-struct OrientedBox : public Collision
+struct Circle : public Collision
 {
     CGUL::Color color;
     CGUL::Vector2 position;
-    CGUL::Vector2 halfExtents;
-    CGUL::Float32 orientation;
+    CGUL::Float32 radius;
 
-    OrientedBox();
-    OrientedBox(const CGUL::Vector2& position, const CGUL::Vector2& halfExtents, CGUL::Float32 orientation);
+    Circle();
+    Circle(const CGUL::Vector2& position, CGUL::Float32 radius);
 
     void SetPosition(const CGUL::Vector2& position);
-    void SetHalfExtents(const CGUL::Vector2& halfExtents);
-    void SetOrientation(CGUL::Float32 orientation);
+    void SetRadius(CGUL::Float32 radius);
 
     CGUL::Vector2 GetPosition() const;
-    CGUL::Vector2 GetHalfExtents() const;
-    CGUL::Float32 GetOrientation() const;
+    CGUL::Float32 GetRadius() const;
 
     void ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const;
 

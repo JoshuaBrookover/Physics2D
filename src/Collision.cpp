@@ -1,18 +1,22 @@
 #include "Collision.hpp"
 
-void Collision::ProjectionOnAxis(const CGUL::Vector2* points, const CGUL::Size count, const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max)
+#include "Circle.hpp"
+#include "AxisAlignedBox.hpp"
+#include "OrientedBox.hpp"
+
+using namespace CGUL;
+
+void Collision::ProjectionOnAxis(const Vector2* points, const Size count, const Vector2& axis, Float32* min, Float32* max)
 {
-    CGUL::Vector2 point = points[0];
+    Vector2 point = points[0];
     point = points[0];
-    CGUL::Float32 dotProduct = CGUL::Vector2::DotProduct(axis, point);
-    render->Line(point, point + CGUL::Vector2(5, 5), CGUL::Colors::white);
+    Float32 dotProduct = Vector2::DotProduct(axis, point);
     *min = *max = dotProduct;
-    for (CGUL::Byte i = 1; i < count; i++)
+    for (Byte i = 1; i < count; i++)
     {
         point = points[i];
-        render->Line(point, point + CGUL::Vector2(5, 5), CGUL::Colors::white);
 
-        dotProduct = CGUL::Vector2::DotProduct(axis, point);
+        dotProduct = Vector2::DotProduct(axis, point);
 
         if (dotProduct < *min)
         {
@@ -25,23 +29,63 @@ void Collision::ProjectionOnAxis(const CGUL::Vector2* points, const CGUL::Size c
     }
 }
 
-Collision::Collision(CGUL::Enum type) :
+bool Collision::CheckCircleAndCircle(const Circle& a, const Circle& b)
+{
+    return (Math::Sqr(a.radius + b.radius) > Vector2::DistanceSquared(a.position, b.position));
+}
+
+bool Collision::CheckCircleAndAxisAlignedBox(const Circle& circle, const AxisAlignedBox& box)
+{
+}
+
+bool Collision::CheckCircleAndOrientedBox(const Circle& circle, const OrientedBox& box)
+{
+}
+
+bool Collision::CheckAxisAlignedBoxAndAxisAlignedBox(const AxisAlignedBox& a, const AxisAlignedBox& b)
+{
+    CGUL::Vector2 difference = a.position - b.position;
+    difference.x = CGUL::Math::Abs(difference.x);
+    difference.y = CGUL::Math::Abs(difference.y);
+    CGUL::Vector2 combinedExtents = (a.extents + b.extents) / 2;
+
+    return (difference.x <= combinedExtents.x && difference.y <= combinedExtents.y);
+}
+
+bool Collision::CheckAxisAlignedBoxAndOrientedBox(const AxisAlignedBox& aabb, const OrientedBox& obb)
+{
+}
+
+bool Collision::CheckOrientedBoxAndOrientedBox(const OrientedBox& a, const OrientedBox& b)
+{
+    Vector2 axes[] =
+    {
+        Vector2(Math::Cos(a.orientation), Math::Sin(a.orientation)),
+        Vector2(Math::Sin(a.orientation), -Math::Cos(a.orientation)),
+        Vector2(Math::Cos(b.orientation), Math::Sin(b.orientation)),
+        Vector2(Math::Sin(b.orientation), -Math::Cos(b.orientation))
+    };
+    return a.CollidingOnAxes(b, axes, 4);
+}
+
+
+Collision::Collision(Enum type) :
     type(type)
 {
 }
 
-bool Collision::CollidingOnAxis(const Collision& other, const CGUL::Vector2& axis) const
+bool Collision::CollidingOnAxis(const Collision& other, const Vector2& axis) const
 {
-    CGUL::Float32 min, max, otherMin, otherMax;
+    Float32 min, max, otherMin, otherMax;
     ProjectionOnAxis(axis, &min, &max);
     other.ProjectionOnAxis(axis, &otherMin, &otherMax);
 
     return (min <= otherMax && max >= otherMin);
 }
 
-bool Collision::CollidingOnAxes(const Collision& other, CGUL::Vector2* axes, CGUL::Size count) const
+bool Collision::CollidingOnAxes(const Collision& other, Vector2* axes, Size count) const
 {
-    for (CGUL::Size i = 0; i < count; i++)
+    for (Size i = 0; i < count; i++)
     {
         if (!CollidingOnAxis(other, axes[i]))
         {
