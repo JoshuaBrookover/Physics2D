@@ -4,9 +4,10 @@ Physics2D
 Some 2D collision detection and physics stuff written in C++.  
 Utilizes and remains consistent with the [C++ General Utility Library (CGUL)](https://github.com/Zethes/CGUL).
 
-Goals:
-* Collision detection between various trivial 2D primitives (AABB, OBB, Sphere, Triangle, Line Segment/Ray, etc)
-* Closest point algorithms
+Goals
+=====
+* [Collision detection](#collision-detection) between various trivial 2D primitives (AABB, OBB, Circle, Triangle, Line Segment/Ray, etc)
+* [Closest point](#closest-point) algorithms
 * "Complex" objects built from trivial primitives
 * Triangulization from convex and concave primitives
 * Collision prediction algorithms
@@ -15,6 +16,26 @@ Goals:
 * Consistent results between identical iterations
 * Hierarchy collision detection optimizations
 * Binary space partitioning optimizations
+
+Collision Detection
+=====
+Below is a matrix of supported collision algorithms between trivial 2D primitives.
+
+| X          | Circle | AABB  | OBB   |
+|:----------:|:------:|:-----:|:-----:|
+| __Circle__ | CHECK  |       |       |
+| __AABB__   |        | CHECK |       |
+| __OBB__    |        |       | CHECK |
+
+__Planned types:__
+* Triangles
+* Line Segments
+* Ovals ?
+
+Closest Point
+=====
+Closest point algorithms are implemented for the following types:  
+__NONE__ :grinning:
 
 Requirements
 =====
