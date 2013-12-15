@@ -37,6 +37,11 @@ CGUL::Vector2 AxisAlignedBox::GetExtents() const
     return this->extents;
 }
 
+CGUL::Vector2 AxisAlignedBox::GetClosestPoint(const CGUL::Vector2& position) const
+{
+    return CGUL::Vector2(0, 0);
+}
+
 void AxisAlignedBox::ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const
 {
 }

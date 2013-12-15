@@ -48,12 +48,29 @@ CGUL::Float32 OrientedBox::GetOrientation() const
     return orientation;
 }
 
+CGUL::Vector2 OrientedBox::GetClosestPoint(const CGUL::Vector2& position) const
+{
+    using namespace CGUL;
+
+    Vector2 axes[] =
+    {
+        // TODO: set these values up correctly
+        Vector2::unitX,
+        Vector2::unitY,
+    };
+
+    Vector2 converted(Vector2::DotProduct(position, axes[0]), Vector2::DotProduct(position, axes[1]));
+    converted = Vector2(Vector2::DotProduct(converted, Vector2::unitX), Vector2::DotProduct(converted, Vector2::unitY));
+
+    return converted;
+}
+
 void OrientedBox::ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const
 {
     CGUL::Matrix world;
     world = world * CGUL::Matrix::MakeRotation(orientation);
-
     world = world * CGUL::Matrix::MakeTranslation(position);
+
     CGUL::Vector2 points[] =
     {
         CGUL::Vector2( halfExtents.x,  halfExtents.y) * world,

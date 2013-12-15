@@ -20,6 +20,8 @@ struct AxisAlignedBox : public Collision
     CGUL::Vector2 GetPosition() const;
     CGUL::Vector2 GetExtents() const;
 
+    CGUL::Vector2 GetClosestPoint(const CGUL::Vector2& position) const;
+
     void ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const;
     bool CollidingOnAxis(const Collision& other, const CGUL::Vector2& axis) const;
 

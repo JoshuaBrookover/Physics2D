@@ -35,7 +35,7 @@ __Planned types:__
 Closest Point
 =====
 Closest point algorithms are implemented for the following types:  
-__NONE__ :grinning:
+* Circle
 
 Requirements
 =====

@@ -38,6 +38,19 @@ CGUL::Float32 Circle::GetRadius() const
     return radius;
 }
 
+CGUL::Vector2 Circle::GetClosestPoint(const CGUL::Vector2& position) const
+{
+    CGUL::Vector2 difference = position - this->position;
+    CGUL::Float32 distance = difference.GetMagnitude();
+    if (distance > radius)
+    {
+        difference /= distance;
+        difference *= radius;
+        return this->position + difference;
+    }
+    return position;
+}
+
 void Circle::ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const
 {
     CGUL::Float32 projection = CGUL::Vector2::DotProduct(axis, position);

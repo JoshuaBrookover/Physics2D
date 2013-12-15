@@ -31,7 +31,15 @@ void StateBoxes::Update(CGUL::Float32 deltaTime)
     box1.halfExtents = CGUL::Vector2(50, 50) + (CGUL::Vector2(25, 25) * CGUL::Math::Sin(timer));
     box1.orientation = CGUL::Math::Mod(box1.orientation + deltaTime, CGUL::Math::Tau< CGUL::Float32 >());
 
-    box2.orientation = CGUL::Math::Mod(box2.orientation + deltaTime * 0.34892f, CGUL::Math::Tau< CGUL::Float32 >());
+    //box2.orientation = CGUL::Math::Mod(box2.orientation + deltaTime * 0.34892f, CGUL::Math::Tau< CGUL::Float32 >());
+    if (stateMachine->IsKeyDown('A'))
+    {
+        box2.orientation = CGUL::Math::Pi< CGUL::Float32 >();
+    }
+    else
+    {
+        box2.orientation = 0;
+    }
 
     render->SetDoNotDraw(true);
     if (box1.CollidingOrientedBox(box2))
@@ -50,6 +58,9 @@ void StateBoxes::Update(CGUL::Float32 deltaTime)
     box2.Draw();
 
     box1.CollidingOrientedBox(box2);
+
+    CGUL::SCoord32 mousePos = stateMachine->GetMousePosition();
+    render->Circle(box2.GetClosestPoint(mousePos), 3, CGUL::Colors::white);
 }
 
 void StateBoxes::Exit()

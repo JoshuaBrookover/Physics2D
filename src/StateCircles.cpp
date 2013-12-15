@@ -79,6 +79,12 @@ void StateCircles::Update(CGUL::Float32 deltaTime)
     {
         (*itr)->Draw();
     }
+
+    CGUL::SCoord32 mousePos = stateMachine->GetMousePosition();
+    for (CGUL::Vector< MovingCircle* >::iterator itr = circles.begin(); itr != circles.end(); itr++)
+    {
+        render->Circle((*itr)->GetClosestPoint(mousePos), 3, CGUL::Colors::white);
+    }
 }
 
 void StateCircles::Exit()
