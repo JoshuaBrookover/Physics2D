@@ -9,7 +9,8 @@ add_executable(physics
     src/main.cpp
     src/State.cpp
     src/StateMachine.cpp
-    src/TestState.cpp
+    src/StateBoxes.cpp
+    src/StateCircles.cpp
     src/Render.cpp
     src/Collision.cpp
     src/AxisAlignedBox.cpp
@@ -18,3 +19,9 @@ add_executable(physics
 )
 target_link_libraries(physics ${CGUL_LIBRARIES})
 cgul_bake_rpath(physics "$ORIGIN")
+
+if(NOT CGUL_STATIC)
+    get_target_property(__CGUL_PATH CGUL IMPORTED_LOCATION)
+    get_filename_component(__CGUL_NAME ${__CGUL_PATH} NAME)
+    add_custom_target(${__CGUL_NAME} ALL COMMAND cmake -E copy "${__CGUL_PATH}" "${CMAKE_CURRENT_BINARY_DIR}/" VERBATIM)
+endif()

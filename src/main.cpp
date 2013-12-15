@@ -1,5 +1,5 @@
 #include "StateMachine.hpp"
-#include "TestState.hpp"
+#include "StateBoxes.hpp"
 
 int main()
 {
@@ -7,7 +7,7 @@ int main()
 
     StateMachine stateMachine;
     stateMachine.Initialize();
-    stateMachine.ChangeState(new TestState());
+    stateMachine.ChangeState(new StateBoxes());
     while (stateMachine.IsRunning())
     {
         stateMachine.Update();

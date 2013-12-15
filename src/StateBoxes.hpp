@@ -5,15 +5,13 @@
 #include "AxisAlignedBox.hpp"
 #include "OrientedBox.hpp"
 
-class TestState : public State
+class StateBoxes : public State
 {
     OrientedBox box1;
     OrientedBox box2;
-    Circle circle1;
-    Circle circle2;
 public:
-    TestState();
-    ~TestState();
+    StateBoxes();
+    ~StateBoxes();
 
     void Enter();
     void Update(CGUL::Float32 deltaTime);

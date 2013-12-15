@@ -2,25 +2,31 @@
 #include "State.hpp"
 #include "Render.hpp"
 
+#include "StateBoxes.hpp"
+#include "StateCircles.hpp"
+
 Render* render;
-StateMachine* stateMachine;
 
-void StateMachine::KeyButtonEvent(const CGUL::WindowKeyButtonEvent& event)
+void StateMachine::KeyButtonEvent(const CGUL::WindowKeyButtonEvent& event, void* userData)
 {
-}
-
-void StateMachine::MouseButtonEvent(const CGUL::WindowMouseButtonEvent& event)
-{
-}
-
-void StateMachine::MouseMoveEvent(const CGUL::WindowMouseMoveEvent& event)
-{
-    if (stateMachine != NULL)
+    StateMachine* stateMachine = (StateMachine*)userData;
+    if (event.key < 256)
     {
-        CGUL::Vector2 relativeSize(800.0f / stateMachine->window.GetWidth(), 600.0f / stateMachine->window.GetHeight());
-        stateMachine->mousePosition = event.location;
-        stateMachine->mousePosition = CGUL::SCoord32(stateMachine->mousePosition.x * relativeSize.x, stateMachine->mousePosition.y * relativeSize.y);
+        CGUL::Byte& key = stateMachine->keys[event.key];
+        key = (event.pressed ? key | INPUT_DOWN : key & ~INPUT_DOWN);
     }
+}
+
+void StateMachine::MouseButtonEvent(const CGUL::WindowMouseButtonEvent& event, void* userData)
+{
+}
+
+void StateMachine::MouseMoveEvent(const CGUL::WindowMouseMoveEvent& event, void* userData)
+{
+    StateMachine* stateMachine = (StateMachine*)userData;
+    CGUL::Vector2 relativeSize(800.0f / stateMachine->window.GetWidth(), 600.0f / stateMachine->window.GetHeight());
+    stateMachine->mousePosition = event.location;
+    stateMachine->mousePosition = CGUL::SCoord32(stateMachine->mousePosition.x * relativeSize.x, stateMachine->mousePosition.y * relativeSize.y);
 }
 
 StateMachine::StateMachine() :
@@ -28,7 +34,7 @@ StateMachine::StateMachine() :
     queuedState(NULL)
 {
     render = NULL;
-    stateMachine = this;
+    CGUL::Memory::ZeroData(keys, 256);
 }
 
 StateMachine::~StateMachine()
@@ -47,10 +53,11 @@ void StateMachine::Initialize()
     style.size = CGUL::UCoord32(800, 600);
     style.backgroundColor = CGUL::Colors::black;
     window.Create(style);
+    window.SetCursorShow(false);
 
-    window.onKeyButton += KeyButtonEvent;
-    window.onMouseButton += MouseButtonEvent;
-    window.onMouseMove += MouseMoveEvent;
+    window.onKeyButton.AddEvent(KeyButtonEvent, this);
+    window.onMouseButton.AddEvent(MouseButtonEvent, this);
+    window.onMouseMove.AddEvent(MouseMoveEvent, this);
 
     render = new Render(&window);
 
@@ -69,6 +76,27 @@ void StateMachine::Update()
     if (render == NULL)
     {
         return;
+    }
+
+    if (IsKeyPressed('1'))
+    {
+        ChangeState(new StateBoxes);
+    }
+    else if (IsKeyPressed('2'))
+    {
+        ChangeState(new StateCircles);
+    }
+
+    for (CGUL::UInt32 i = 0; i < 256; i++)
+    {
+        if (keys[i] & INPUT_DOWN)
+        {
+            keys[i] |= INPUT_HELD;
+        }
+        else
+        {
+            keys[i] &= ~INPUT_HELD;
+        }
     }
 
     if (queuedState != NULL)
@@ -110,4 +138,19 @@ void StateMachine::Exit()
 CGUL::SCoord32 StateMachine::GetMousePosition() const
 {
     return mousePosition;
+}
+
+bool StateMachine::IsKeyDown(CGUL::Byte key) const
+{
+    return (keys[key] & INPUT_DOWN) != 0;
+}
+
+bool StateMachine::IsKeyPressed(CGUL::Byte key) const
+{
+    return (keys[key] & INPUT_DOWN) && !(keys[key] & INPUT_HELD);
+}
+
+bool StateMachine::IsKeyReleased(CGUL::Byte key) const
+{
+    return (keys[key] & INPUT_HELD) && !(keys[key] & INPUT_DOWN);
 }
