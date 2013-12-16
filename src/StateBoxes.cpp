@@ -68,8 +68,9 @@ void StateBoxes::Update(CGUL::Float32 deltaTime)
     box1.CollidingOrientedBox(box2);
 
     CGUL::SCoord32 mousePos = stateMachine->GetMousePosition();
-    //render->Circle(box2.GetClosestPoint(mousePos), 3, CGUL::Colors::white);
-    render->Circle(box3.GetClosestPoint(mousePos), 3, CGUL::Colors::white);
+    render->Circle(box2.GetClosestPoint(mousePos), 3, CGUL::Colors::white);
+    render->Line(box2.GetClosestPoint(mousePos), mousePos, CGUL::Colors::white);
+    //render->Circle(box3.GetClosestPoint(mousePos), 3, CGUL::Colors::white);
 
     render->Circle(mousePos, 2, CGUL::Colors::red);
 }

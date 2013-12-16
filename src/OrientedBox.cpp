@@ -54,15 +54,21 @@ CGUL::Vector2 OrientedBox::GetClosestPoint(const CGUL::Vector2& position) const
 
     Vector2 axes[] =
     {
-        // TODO: set these values up correctly
-        Vector2::unitX,
-        Vector2::unitY,
+        Vector2(Math::Cos(orientation), Math::Sin(orientation)),
+        Vector2(Math::Sin(orientation), -Math::Cos(orientation))
     };
 
-    Vector2 converted(Vector2::DotProduct(position, axes[0]), Vector2::DotProduct(position, axes[1]));
-    converted = Vector2(Vector2::DotProduct(converted, Vector2::unitX), Vector2::DotProduct(converted, Vector2::unitY));
+    Vector2 difference = position - this->position;
+    Vector2 converted(Vector2::DotProduct(difference, axes[0]), Vector2::DotProduct(difference, axes[1]));
 
-    return converted;
+    converted.x = Math::Clamp(converted.x, -halfExtents.x, halfExtents.x);
+    converted.y = Math::Clamp(converted.y, -halfExtents.y, halfExtents.y);
+
+    Vector2 result = this->position;
+    result += axes[0] * converted.x;
+    result += axes[1] * converted.y;
+
+    return result;
 }
 
 void OrientedBox::ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const
