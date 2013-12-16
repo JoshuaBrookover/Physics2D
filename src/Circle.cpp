@@ -65,12 +65,12 @@ bool Circle::CollidingCircle(const Circle& other) const
 
 bool Circle::CollidingAxisAlignedBox(const AxisAlignedBox& other) const
 {
-    return false;
+    return CheckCircleAndAxisAlignedBox(*this, other);
 }
 
 bool Circle::CollidingOrientedBox(const OrientedBox& other) const
 {
-    return false;
+    return CheckCircleAndOrientedBox(*this, other);
 }
 
 void Circle::Draw() const

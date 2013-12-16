@@ -9,6 +9,7 @@ class StateBoxes : public State
 {
     OrientedBox box1;
     OrientedBox box2;
+    AxisAlignedBox box3;
 public:
     StateBoxes();
     ~StateBoxes();

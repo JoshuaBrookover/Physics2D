@@ -36,10 +36,14 @@ bool Collision::CheckCircleAndCircle(const Circle& a, const Circle& b)
 
 bool Collision::CheckCircleAndAxisAlignedBox(const Circle& circle, const AxisAlignedBox& box)
 {
+    // TODO
+    return false;
 }
 
 bool Collision::CheckCircleAndOrientedBox(const Circle& circle, const OrientedBox& box)
 {
+    // TODO
+    return false;
 }
 
 bool Collision::CheckAxisAlignedBoxAndAxisAlignedBox(const AxisAlignedBox& a, const AxisAlignedBox& b)
@@ -47,13 +51,21 @@ bool Collision::CheckAxisAlignedBoxAndAxisAlignedBox(const AxisAlignedBox& a, co
     CGUL::Vector2 difference = a.position - b.position;
     difference.x = CGUL::Math::Abs(difference.x);
     difference.y = CGUL::Math::Abs(difference.y);
-    CGUL::Vector2 combinedExtents = (a.extents + b.extents) / 2;
+    CGUL::Vector2 combinedExtents = (a.halfExtents + b.halfExtents);
 
     return (difference.x <= combinedExtents.x && difference.y <= combinedExtents.y);
 }
 
 bool Collision::CheckAxisAlignedBoxAndOrientedBox(const AxisAlignedBox& aabb, const OrientedBox& obb)
 {
+    Vector2 axes[] =
+    {
+        Vector2::unitX,
+        Vector2::unitY,
+        Vector2(Math::Cos(obb.orientation), Math::Sin(obb.orientation)),
+        Vector2(Math::Sin(obb.orientation), -Math::Cos(obb.orientation))
+    };
+    return aabb.CollidingOnAxes(obb, axes, 4);
 }
 
 bool Collision::CheckOrientedBoxAndOrientedBox(const OrientedBox& a, const OrientedBox& b)

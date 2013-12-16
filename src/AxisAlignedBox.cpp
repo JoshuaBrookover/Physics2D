@@ -9,11 +9,11 @@ AxisAlignedBox::AxisAlignedBox() :
 {
 }
 
-AxisAlignedBox::AxisAlignedBox(const CGUL::Vector2& position, const CGUL::Vector2& extents) :
+AxisAlignedBox::AxisAlignedBox(const CGUL::Vector2& position, const CGUL::Vector2& halfExtents) :
     Collision(Collision::AXIS_ALIGNED_BOX),
     color(0, 0, 0),
     position(position),
-    extents(extents)
+    halfExtents(halfExtents)
 {
 }
 
@@ -22,9 +22,9 @@ void AxisAlignedBox::SetPosition(const CGUL::Vector2& position)
     this->position = position;
 }
 
-void AxisAlignedBox::SetExtents(const CGUL::Vector2& extents)
+void AxisAlignedBox::SetHalfExtents(const CGUL::Vector2& halfExtents)
 {
-    this->extents = extents;
+    this->halfExtents = halfExtents;
 }
 
 CGUL::Vector2 AxisAlignedBox::GetPosition() const
@@ -34,27 +34,38 @@ CGUL::Vector2 AxisAlignedBox::GetPosition() const
 
 CGUL::Vector2 AxisAlignedBox::GetExtents() const
 {
-    return this->extents;
+    return this->halfExtents;
 }
 
 CGUL::Vector2 AxisAlignedBox::GetClosestPoint(const CGUL::Vector2& position) const
 {
-    return CGUL::Vector2(0, 0);
+    using namespace CGUL;
+
+    Vector2 difference = position - this->position;
+    difference.x = Math::Clamp(difference.x, -halfExtents.x, halfExtents.x);
+    difference.y = Math::Clamp(difference.y, -halfExtents.y, halfExtents.y);
+    return this->position + difference;
 }
 
 void AxisAlignedBox::ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const
 {
-}
+    CGUL::Matrix world;
+    world = world * CGUL::Matrix::MakeTranslation(position);
 
-bool AxisAlignedBox::CollidingOnAxis(const Collision& other, const CGUL::Vector2& axis) const
-{
-    return false;
+    CGUL::Vector2 points[] =
+    {
+        CGUL::Vector2( halfExtents.x,  halfExtents.y) * world,
+        CGUL::Vector2(-halfExtents.x,  halfExtents.y) * world,
+        CGUL::Vector2( halfExtents.x, -halfExtents.y) * world,
+        CGUL::Vector2(-halfExtents.x, -halfExtents.y) * world
+    };
+
+    return Collision::ProjectionOnAxis(points, 4, axis, min, max);
 }
 
 bool AxisAlignedBox::CollidingCircle(const Circle& other) const
 {
-    // TODO
-    return false;
+    return CheckCircleAndAxisAlignedBox(other, *this);
 }
 
 bool AxisAlignedBox::CollidingAxisAlignedBox(const AxisAlignedBox& other) const
@@ -64,11 +75,10 @@ bool AxisAlignedBox::CollidingAxisAlignedBox(const AxisAlignedBox& other) const
 
 bool AxisAlignedBox::CollidingOrientedBox(const OrientedBox& other) const
 {
-    // TODO
-    return false;
+    return CheckAxisAlignedBoxAndOrientedBox(*this, other);
 }
 
 void AxisAlignedBox::Draw() const
 {
-    render->Box(position, extents, color);
+    render->Box(position, halfExtents * 2, color);
 }

@@ -9,13 +9,13 @@ struct AxisAlignedBox : public Collision
 {
     CGUL::Color color;
     CGUL::Vector2 position;
-    CGUL::Vector2 extents;
+    CGUL::Vector2 halfExtents;
 
     AxisAlignedBox();
-    AxisAlignedBox(const CGUL::Vector2& position, const CGUL::Vector2& extents);
+    AxisAlignedBox(const CGUL::Vector2& position, const CGUL::Vector2& halfExtents);
 
     void SetPosition(const CGUL::Vector2& position);
-    void SetExtents(const CGUL::Vector2& extents);
+    void SetHalfExtents(const CGUL::Vector2& halfExtents);
 
     CGUL::Vector2 GetPosition() const;
     CGUL::Vector2 GetExtents() const;
@@ -23,7 +23,6 @@ struct AxisAlignedBox : public Collision
     CGUL::Vector2 GetClosestPoint(const CGUL::Vector2& position) const;
 
     void ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const;
-    bool CollidingOnAxis(const Collision& other, const CGUL::Vector2& axis) const;
 
     bool CollidingCircle(const Circle& other) const;
     bool CollidingAxisAlignedBox(const AxisAlignedBox& other) const;

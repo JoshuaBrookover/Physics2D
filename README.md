@@ -24,8 +24,8 @@ Below is a matrix of supported collision algorithms between trivial 2D primitive
 | X          | Circle | AABB  | OBB   |
 |:----------:|:------:|:-----:|:-----:|
 | __Circle__ | CHECK  |       |       |
-| __AABB__   |        | CHECK |       |
-| __OBB__    |        |       | CHECK |
+| __AABB__   |        | CHECK | CHECK |
+| __OBB__    |        | CHECK | CHECK |
 
 __Planned types:__
 * Triangles
@@ -36,6 +36,7 @@ Closest Point
 =====
 Closest point algorithms are implemented for the following types:  
 * Circle
+* AABB
 
 Requirements
 =====

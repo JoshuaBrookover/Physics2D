@@ -84,14 +84,12 @@ void OrientedBox::ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min
 
 bool OrientedBox::CollidingCircle(const Circle& other) const
 {
-    // TODO
-    return false;
+    return CheckCircleAndOrientedBox(other, *this);
 }
 
 bool OrientedBox::CollidingAxisAlignedBox(const AxisAlignedBox& other) const
 {
-    // TODO
-    return false;
+    return CheckAxisAlignedBoxAndOrientedBox(other, *this);
 }
 
 bool OrientedBox::CollidingOrientedBox(const OrientedBox& other) const
