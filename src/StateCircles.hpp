@@ -10,6 +10,7 @@ struct MovingCircle;
 class StateCircles : public State
 {
     CGUL::Vector< MovingCircle* > circles;
+    OrientedBox box;
 public:
     StateCircles();
     ~StateCircles();

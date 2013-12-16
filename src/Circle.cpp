@@ -55,7 +55,7 @@ void Circle::ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGU
 {
     CGUL::Float32 projection = CGUL::Vector2::DotProduct(axis, position);
     *min = projection - radius;
-    *max = projection - radius;
+    *max = projection + radius;
 }
 
 bool Circle::CollidingCircle(const Circle& other) const

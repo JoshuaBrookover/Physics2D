@@ -36,14 +36,14 @@ bool Collision::CheckCircleAndCircle(const Circle& a, const Circle& b)
 
 bool Collision::CheckCircleAndAxisAlignedBox(const Circle& circle, const AxisAlignedBox& box)
 {
-    // TODO
-    return false;
+    CGUL::Vector2 closestPoint = box.GetClosestPoint(circle.position);
+    return (CGUL::Vector2::DistanceSquared(circle.position, closestPoint) < CGUL::Math::Sqr(circle.radius));
 }
 
 bool Collision::CheckCircleAndOrientedBox(const Circle& circle, const OrientedBox& box)
 {
-    // TODO
-    return false;
+    CGUL::Vector2 closestPoint = box.GetClosestPoint(circle.position);
+    return (CGUL::Vector2::DistanceSquared(circle.position, closestPoint) < CGUL::Math::Sqr(circle.radius));
 }
 
 bool Collision::CheckAxisAlignedBoxAndAxisAlignedBox(const AxisAlignedBox& a, const AxisAlignedBox& b)

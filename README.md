@@ -23,9 +23,9 @@ Below is a matrix of supported collision algorithms between trivial 2D primitive
 
 | X          | Circle | AABB  | OBB   |
 |:----------:|:------:|:-----:|:-----:|
-| __Circle__ | CHECK  |       |       |
-| __AABB__   |        | CHECK | CHECK |
-| __OBB__    |        | CHECK | CHECK |
+| __Circle__ | CHECK  | CHECK | CHECK |
+| __AABB__   | CHECK  | CHECK | CHECK |
+| __OBB__    | CHECK  | CHECK | CHECK |
 
 __Planned types:__
 * Triangles
