@@ -3,6 +3,7 @@
 #include "Circle.hpp"
 #include "AxisAlignedBox.hpp"
 #include "OrientedBox.hpp"
+#include "Line.hpp"
 
 using namespace CGUL;
 
@@ -46,6 +47,12 @@ bool Collision::CheckCircleAndOrientedBox(const Circle& circle, const OrientedBo
     return (CGUL::Vector2::DistanceSquared(circle.position, closestPoint) < CGUL::Math::Sqr(circle.radius));
 }
 
+bool Collision::CheckCircleAndLine(const Circle& circle, const Line& line)
+{
+    // TODO
+    return false;
+}
+
 bool Collision::CheckAxisAlignedBoxAndAxisAlignedBox(const AxisAlignedBox& a, const AxisAlignedBox& b)
 {
     CGUL::Vector2 difference = a.position - b.position;
@@ -68,6 +75,12 @@ bool Collision::CheckAxisAlignedBoxAndOrientedBox(const AxisAlignedBox& aabb, co
     return aabb.CollidingOnAxes(obb, axes, 4);
 }
 
+bool Collision::CheckAxisAlignedBoxAndLine(const AxisAlignedBox& box, const Line& line)
+{
+    // TODO
+    return false;
+}
+
 bool Collision::CheckOrientedBoxAndOrientedBox(const OrientedBox& a, const OrientedBox& b)
 {
     Vector2 axes[] =
@@ -80,6 +93,17 @@ bool Collision::CheckOrientedBoxAndOrientedBox(const OrientedBox& a, const Orien
     return a.CollidingOnAxes(b, axes, 4);
 }
 
+bool Collision::CheckOrientedBoxAndLine(const OrientedBox& box, const Line& line)
+{
+    // TODO
+    return false;
+}
+
+bool Collision::CheckLineAndLine(const Line& a, const Line& b)
+{
+    // TODO
+    return false;
+}
 
 Collision::Collision(Enum type) :
     type(type)

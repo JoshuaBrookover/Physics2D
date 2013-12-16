@@ -27,6 +27,7 @@ struct Circle : public Collision
     bool CollidingCircle(const Circle& other) const;
     bool CollidingAxisAlignedBox(const AxisAlignedBox& other) const;
     bool CollidingOrientedBox(const OrientedBox& other) const;
+    bool CollidingLine(const Line& other) const;
 
     void Draw() const;
 };

@@ -5,6 +5,7 @@
 struct Circle;
 struct AxisAlignedBox;
 struct OrientedBox;
+struct Line;
 
 extern Render* render;
 
@@ -14,7 +15,8 @@ struct Collision
     {
         CIRCLE,
         AXIS_ALIGNED_BOX,
-        ORIENTED_BOX
+        ORIENTED_BOX,
+        LINE
     };
 
     static void ProjectionOnAxis(const CGUL::Vector2* points, const CGUL::Size count, const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max);
@@ -22,9 +24,13 @@ struct Collision
     static bool CheckCircleAndCircle(const Circle& a, const Circle& b);
     static bool CheckCircleAndAxisAlignedBox(const Circle& circle, const AxisAlignedBox& box);
     static bool CheckCircleAndOrientedBox(const Circle& circle, const OrientedBox& box);
+    static bool CheckCircleAndLine(const Circle& circle, const Line& line);
     static bool CheckAxisAlignedBoxAndAxisAlignedBox(const AxisAlignedBox& a, const AxisAlignedBox& b);
     static bool CheckAxisAlignedBoxAndOrientedBox(const AxisAlignedBox& aabb, const OrientedBox& obb);
+    static bool CheckAxisAlignedBoxAndLine(const AxisAlignedBox& box, const Line& line);
     static bool CheckOrientedBoxAndOrientedBox(const OrientedBox& a, const OrientedBox& b);
+    static bool CheckOrientedBoxAndLine(const OrientedBox& box, const Line& line);
+    static bool CheckLineAndLine(const Line& a, const Line& b);
 
     CGUL::Enum type;
 

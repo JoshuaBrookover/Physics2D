@@ -2,19 +2,20 @@
 
 #include "AxisAlignedBox.hpp"
 #include "OrientedBox.hpp"
+#include "Line.hpp"
 
 Circle::Circle() :
     Collision(Collision::CIRCLE),
-    radius(0),
-    color(0, 0, 0)
+    color(0, 0, 0),
+    radius(0)
 {
 }
 
 Circle::Circle(const CGUL::Vector2& position, CGUL::Float32 radius) :
     Collision(Collision::CIRCLE),
+    color(0, 0, 0),
     position(position),
-    radius(radius),
-    color(0, 0, 0)
+    radius(radius)
 {
 }
 
@@ -71,6 +72,11 @@ bool Circle::CollidingAxisAlignedBox(const AxisAlignedBox& other) const
 bool Circle::CollidingOrientedBox(const OrientedBox& other) const
 {
     return CheckCircleAndOrientedBox(*this, other);
+}
+
+bool Circle::CollidingLine(const Line& other) const
+{
+    return CheckCircleAndLine(*this, other);
 }
 
 void Circle::Draw() const

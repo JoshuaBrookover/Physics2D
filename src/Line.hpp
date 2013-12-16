@@ -5,23 +5,20 @@
 
 extern Render* render;
 
-struct OrientedBox : public Collision
+struct Line : public Collision
 {
     CGUL::Color color;
-    CGUL::Vector2 position;
-    CGUL::Vector2 halfExtents;
-    CGUL::Float32 orientation;
+    CGUL::Vector2 start;
+    CGUL::Vector2 end;
 
-    OrientedBox();
-    OrientedBox(const CGUL::Vector2& position, const CGUL::Vector2& halfExtents, CGUL::Float32 orientation);
+    Line();
+    Line(const CGUL::Vector2& start, const CGUL::Vector2& end);
 
-    void SetPosition(const CGUL::Vector2& position);
-    void SetHalfExtents(const CGUL::Vector2& halfExtents);
-    void SetOrientation(CGUL::Float32 orientation);
+    void SetStart(const CGUL::Vector2& start);
+    void SetEnd(const CGUL::Vector2& end);
 
-    CGUL::Vector2 GetPosition() const;
-    CGUL::Vector2 GetHalfExtents() const;
-    CGUL::Float32 GetOrientation() const;
+    CGUL::Vector2 GetStart() const;
+    CGUL::Vector2 GetEnd() const;
 
     CGUL::Vector2 GetClosestPoint(const CGUL::Vector2& position) const;
 

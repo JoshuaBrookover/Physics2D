@@ -2,6 +2,7 @@
 
 #include "Circle.hpp"
 #include "OrientedBox.hpp"
+#include "Line.hpp"
 
 AxisAlignedBox::AxisAlignedBox() :
     Collision(Collision::AXIS_ALIGNED_BOX),
@@ -76,6 +77,11 @@ bool AxisAlignedBox::CollidingAxisAlignedBox(const AxisAlignedBox& other) const
 bool AxisAlignedBox::CollidingOrientedBox(const OrientedBox& other) const
 {
     return CheckAxisAlignedBoxAndOrientedBox(*this, other);
+}
+
+bool AxisAlignedBox::CollidingLine(const Line& other) const
+{
+    return CheckAxisAlignedBoxAndLine(*this, other);
 }
 
 void AxisAlignedBox::Draw() const

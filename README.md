@@ -21,15 +21,15 @@ Collision Detection
 =====
 Below is a matrix of supported collision algorithms between trivial 2D primitives.
 
-| X          | Circle | AABB  | OBB   |
-|:----------:|:------:|:-----:|:-----:|
-| __Circle__ | CHECK  | CHECK | CHECK |
-| __AABB__   | CHECK  | CHECK | CHECK |
-| __OBB__    | CHECK  | CHECK | CHECK |
+| X          | Circle | AABB  | OBB   | Line  |
+|:----------:|:------:|:-----:|:-----:|:-----:|
+| __Circle__ | CHECK  | CHECK | CHECK |       |
+| __AABB__   | CHECK  | CHECK | CHECK |       |
+| __OBB__    | CHECK  | CHECK | CHECK |       |
+| __LINE__   |        |       |       |       |
 
 __Planned types:__
 * Triangles
-* Line Segments
 * Ovals ?
 
 Closest Point
