@@ -37,6 +37,7 @@ Closest Point
 Closest point algorithms are implemented for the following types:  
 * Circle
 * AABB
+* OBB
 
 Requirements
 =====
