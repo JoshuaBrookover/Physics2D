@@ -14,9 +14,11 @@ struct Line : public Collision
     Line();
     Line(const CGUL::Vector2& start, const CGUL::Vector2& end);
 
+    void SetPosition(const CGUL::Vector2& position);
     void SetStart(const CGUL::Vector2& start);
     void SetEnd(const CGUL::Vector2& end);
 
+    CGUL::Vector2 GetPosition() const;
     CGUL::Vector2 GetStart() const;
     CGUL::Vector2 GetEnd() const;
 
