@@ -49,8 +49,8 @@ bool Collision::CheckCircleAndOrientedBox(const Circle& circle, const OrientedBo
 
 bool Collision::CheckCircleAndLine(const Circle& circle, const Line& line)
 {
-    // TODO
-    return false;
+    CGUL::Vector2 closestPoint = line.GetClosestPoint(circle.position);
+    return (CGUL::Vector2::DistanceSquared(circle.position, closestPoint) < CGUL::Math::Sqr(circle.radius));
 }
 
 bool Collision::CheckAxisAlignedBoxAndAxisAlignedBox(const AxisAlignedBox& a, const AxisAlignedBox& b)
@@ -129,4 +129,16 @@ bool Collision::CollidingOnAxes(const Collision& other, Vector2* axes, Size coun
         }
     }
     return true;
+}
+
+bool Collision::Colliding(const Collision* other) const
+{
+    switch (type)
+    {
+        case CIRCLE: return other->CollidingCircle(*(Circle*)this);
+        case AXIS_ALIGNED_BOX: return other->CollidingAxisAlignedBox(*(AxisAlignedBox*)this);
+        case ORIENTED_BOX: return other->CollidingOrientedBox(*(OrientedBox*)this);
+        case LINE: return other->CollidingLine(*(Line*)this);
+        default: return false;
+    }
 }

@@ -11,6 +11,7 @@ add_executable(physics
     src/StateMachine.cpp
     src/StateBoxes.cpp
     src/StateCircles.cpp
+    src/StateTest.cpp
     src/Render.cpp
     src/Collision.cpp
     src/AxisAlignedBox.cpp

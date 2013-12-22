@@ -6,14 +6,12 @@
 
 Circle::Circle() :
     Collision(Collision::CIRCLE),
-    color(0, 0, 0),
     radius(0)
 {
 }
 
 Circle::Circle(const CGUL::Vector2& position, CGUL::Float32 radius) :
     Collision(Collision::CIRCLE),
-    color(0, 0, 0),
     position(position),
     radius(radius)
 {
@@ -50,6 +48,11 @@ CGUL::Vector2 Circle::GetClosestPoint(const CGUL::Vector2& position) const
         return this->position + difference;
     }
     return position;
+}
+
+CGUL::Matrix Circle::GetWorldMatrix() const
+{
+    return CGUL::Matrix::MakeTranslation(position);
 }
 
 void Circle::ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const

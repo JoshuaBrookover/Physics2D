@@ -7,7 +7,6 @@ extern Render* render;
 
 struct AxisAlignedBox : public Collision
 {
-    CGUL::Color color;
     CGUL::Vector2 position;
     CGUL::Vector2 halfExtents;
 
@@ -23,6 +22,8 @@ struct AxisAlignedBox : public Collision
     CGUL::Vector2 GetClosestPoint(const CGUL::Vector2& position) const;
 
     void ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const;
+
+    CGUL::Matrix GetWorldMatrix() const;
 
     bool CollidingCircle(const Circle& other) const;
     bool CollidingAxisAlignedBox(const AxisAlignedBox& other) const;

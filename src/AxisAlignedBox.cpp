@@ -5,14 +5,12 @@
 #include "Line.hpp"
 
 AxisAlignedBox::AxisAlignedBox() :
-    Collision(Collision::AXIS_ALIGNED_BOX),
-    color(0, 0, 0)
+    Collision(Collision::AXIS_ALIGNED_BOX)
 {
 }
 
 AxisAlignedBox::AxisAlignedBox(const CGUL::Vector2& position, const CGUL::Vector2& halfExtents) :
     Collision(Collision::AXIS_ALIGNED_BOX),
-    color(0, 0, 0),
     position(position),
     halfExtents(halfExtents)
 {
@@ -46,6 +44,11 @@ CGUL::Vector2 AxisAlignedBox::GetClosestPoint(const CGUL::Vector2& position) con
     difference.x = Math::Clamp(difference.x, -halfExtents.x, halfExtents.x);
     difference.y = Math::Clamp(difference.y, -halfExtents.y, halfExtents.y);
     return this->position + difference;
+}
+
+CGUL::Matrix AxisAlignedBox::GetWorldMatrix() const
+{
+    return CGUL::Matrix::MakeTranslation(position);
 }
 
 void AxisAlignedBox::ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const

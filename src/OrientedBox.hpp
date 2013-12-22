@@ -7,7 +7,6 @@ extern Render* render;
 
 struct OrientedBox : public Collision
 {
-    CGUL::Color color;
     CGUL::Vector2 position;
     CGUL::Vector2 halfExtents;
     CGUL::Float32 orientation;
@@ -24,6 +23,8 @@ struct OrientedBox : public Collision
     CGUL::Float32 GetOrientation() const;
 
     CGUL::Vector2 GetClosestPoint(const CGUL::Vector2& position) const;
+
+    CGUL::Matrix GetWorldMatrix() const;
 
     void ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const;
 

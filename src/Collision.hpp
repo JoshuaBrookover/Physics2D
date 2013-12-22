@@ -33,6 +33,7 @@ struct Collision
     static bool CheckLineAndLine(const Line& a, const Line& b);
 
     CGUL::Enum type;
+    CGUL::Color color;
 
     Collision(CGUL::Enum type);
 
@@ -41,6 +42,8 @@ struct Collision
 
     virtual CGUL::Vector2 GetClosestPoint(const CGUL::Vector2& position) const = 0;
 
+    virtual CGUL::Matrix GetWorldMatrix() const = 0;
+
     virtual void ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const = 0;
     virtual bool CollidingOnAxis(const Collision& other, const CGUL::Vector2& axis) const;
     virtual bool CollidingOnAxes(const Collision& other, CGUL::Vector2* axes, CGUL::Size count) const;
@@ -48,6 +51,9 @@ struct Collision
     virtual bool CollidingCircle(const Circle& other) const = 0;
     virtual bool CollidingAxisAlignedBox(const AxisAlignedBox& other) const = 0;
     virtual bool CollidingOrientedBox(const OrientedBox& other) const = 0;
+    virtual bool CollidingLine(const Line& other) const = 0;
+
+    bool Colliding(const Collision* other) const;
 
     virtual void Draw() const = 0;
 };

@@ -4,6 +4,7 @@
 
 #include "StateBoxes.hpp"
 #include "StateCircles.hpp"
+#include "StateTest.hpp"
 
 Render* render;
 
@@ -19,6 +20,12 @@ void StateMachine::KeyButtonEvent(const CGUL::WindowKeyButtonEvent& event, void*
 
 void StateMachine::MouseButtonEvent(const CGUL::WindowMouseButtonEvent& event, void* userData)
 {
+    StateMachine* stateMachine = (StateMachine*)userData;
+    if (event.button < 3)
+    {
+        CGUL::Byte& button = stateMachine->buttons[event.button];
+        button = (event.pressed ? button | INPUT_DOWN : button & ~INPUT_DOWN);
+    }
 }
 
 void StateMachine::MouseMoveEvent(const CGUL::WindowMouseMoveEvent& event, void* userData)
@@ -86,6 +93,10 @@ void StateMachine::Update()
     {
         ChangeState(new StateCircles);
     }
+    else if (IsKeyPressed('3'))
+    {
+        ChangeState(new StateTest);
+    }
 
     for (CGUL::UInt32 i = 0; i < 256; i++)
     {
@@ -96,6 +107,18 @@ void StateMachine::Update()
         else
         {
             keys[i] &= ~INPUT_HELD;
+        }
+    }
+
+    for (CGUL::UInt32 i = 0; i < 3; i++)
+    {
+        if (buttons[i] & INPUT_DOWN)
+        {
+            buttons[i] |= INPUT_HELD;
+        }
+        else
+        {
+            buttons[i] &= ~INPUT_HELD;
         }
     }
 
@@ -153,4 +176,19 @@ bool StateMachine::IsKeyPressed(CGUL::Byte key) const
 bool StateMachine::IsKeyReleased(CGUL::Byte key) const
 {
     return (keys[key] & INPUT_HELD) && !(keys[key] & INPUT_DOWN);
+}
+
+bool StateMachine::IsButtonDown(CGUL::Byte button) const
+{
+    return (buttons[button] & INPUT_DOWN) != 0;
+}
+
+bool StateMachine::IsButtonPressed(CGUL::Byte button) const
+{
+    return (buttons[button] & INPUT_DOWN) && !(buttons[button] & INPUT_HELD);
+}
+
+bool StateMachine::IsButtonReleased(CGUL::Byte button) const
+{
+    return (buttons[button] & INPUT_HELD) && !(buttons[button] & INPUT_DOWN);
 }

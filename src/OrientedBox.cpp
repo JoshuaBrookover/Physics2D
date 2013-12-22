@@ -5,14 +5,12 @@
 #include "Line.hpp"
 
 OrientedBox::OrientedBox() :
-    Collision(Collision::ORIENTED_BOX),
-    color(0, 0, 0)
+    Collision(Collision::ORIENTED_BOX)
 {
 }
 
 OrientedBox::OrientedBox(const CGUL::Vector2& position, const CGUL::Vector2& halfExtents, CGUL::Float32 orientation) :
     Collision(Collision::ORIENTED_BOX),
-    color(0, 0, 0),
     position(position),
     halfExtents(halfExtents),
     orientation(orientation)
@@ -62,14 +60,28 @@ CGUL::Vector2 OrientedBox::GetClosestPoint(const CGUL::Vector2& position) const
     Vector2 difference = position - this->position;
     Vector2 converted(Vector2::DotProduct(difference, axes[0]), Vector2::DotProduct(difference, axes[1]));
 
+    Vector2 before = converted;
     converted.x = Math::Clamp(converted.x, -halfExtents.x, halfExtents.x);
     converted.y = Math::Clamp(converted.y, -halfExtents.y, halfExtents.y);
+    if (before == converted)
+    {
+        return position;
+    }
 
     Vector2 result = this->position;
     result += axes[0] * converted.x;
     result += axes[1] * converted.y;
 
     return result;
+}
+
+CGUL::Matrix OrientedBox::GetWorldMatrix() const
+{
+    CGUL::Matrix matrix;
+    matrix = matrix * CGUL::Matrix::MakeRotation(orientation);
+    //matrix = matrix * CGUL::Matrix::MakeScaling(halfExtents);
+    matrix = matrix * CGUL::Matrix::MakeTranslation(position);
+    return matrix;
 }
 
 void OrientedBox::ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const

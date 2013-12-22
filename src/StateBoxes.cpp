@@ -91,7 +91,6 @@ void StateBoxes::Update(CGUL::Float32 deltaTime)
     CGUL::SCoord32 mousePos = stateMachine->GetMousePosition();
     render->Circle(box1.GetClosestPoint(mousePos), 7, CGUL::Colors::green);
     render->Circle(box2.GetClosestPoint(mousePos), 7, CGUL::Colors::green);
-    //render->Line(box2.GetClosestPoint(mousePos), mousePos, CGUL::Colors::white);
     render->Circle(box3.GetClosestPoint(mousePos), 7, CGUL::Colors::green);
     render->Circle(line.GetClosestPoint(mousePos), 7, CGUL::Colors::green);
     render->Circle(circle.GetClosestPoint(mousePos), 7, CGUL::Colors::green);

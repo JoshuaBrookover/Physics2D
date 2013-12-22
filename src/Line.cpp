@@ -5,14 +5,12 @@
 #include "OrientedBox.hpp"
 
 Line::Line() :
-    Collision(Collision::LINE),
-    color(0, 0, 0)
+    Collision(Collision::LINE)
 {
 }
 
 Line::Line(const CGUL::Vector2& start, const CGUL::Vector2& end) :
     Collision(Collision::LINE),
-    color(0, 0, 0),
     start(start),
     end(end)
 {
@@ -64,6 +62,12 @@ CGUL::Vector2 Line::GetClosestPoint(const CGUL::Vector2& position) const
     Float32 perpPosition = Vector2::DotProduct(start, perp);
 
     return axis * axisPosition + perp * perpPosition;
+}
+
+CGUL::Matrix Line::GetWorldMatrix() const
+{
+    // TODO
+    return CGUL::Matrix();
 }
 
 void Line::ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const

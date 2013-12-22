@@ -24,6 +24,7 @@ class StateMachine
         INPUT_HELD = 2
     };
     CGUL::Byte keys[256];
+    CGUL::Byte buttons[256];
 
     CGUL::SCoord32 mousePosition;
 public:
@@ -43,4 +44,8 @@ public:
     bool IsKeyDown(CGUL::Byte key) const;
     bool IsKeyPressed(CGUL::Byte key) const;
     bool IsKeyReleased(CGUL::Byte key) const;
+
+    bool IsButtonDown(CGUL::Byte button) const;
+    bool IsButtonPressed(CGUL::Byte button) const;
+    bool IsButtonReleased(CGUL::Byte button) const;
 };
