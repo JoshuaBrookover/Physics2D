@@ -5,21 +5,28 @@
 
 extern Render* render;
 
-struct Line : public Collision
+struct Triangle : public Collision
 {
-    CGUL::Vector2 start;
-    CGUL::Vector2 end;
+    CGUL::Vector2 position;
+    CGUL::Vector2 pointA;
+    CGUL::Vector2 pointB;
+    CGUL::Vector2 pointC;
+    CGUL::Float32 orientation;
 
-    Line();
-    Line(const CGUL::Vector2& start, const CGUL::Vector2& end);
+    Triangle();
+    Triangle(const CGUL::Vector2& position, const CGUL::Vector2& pointA, const CGUL::Vector2& pointB, const CGUL::Vector2& pointC, CGUL::Float32 orientation);
 
     void SetPosition(const CGUL::Vector2& position);
-    void SetStart(const CGUL::Vector2& start);
-    void SetEnd(const CGUL::Vector2& end);
+    void SetPointA(const CGUL::Vector2& point);
+    void SetPointB(const CGUL::Vector2& point);
+    void SetPointC(const CGUL::Vector2& point);
+    void SetOrientation(CGUL::Float32 orientation);
 
     CGUL::Vector2 GetPosition() const;
-    CGUL::Vector2 GetStart() const;
-    CGUL::Vector2 GetEnd() const;
+    CGUL::Vector2 GetPointA() const;
+    CGUL::Vector2 GetPointB() const;
+    CGUL::Vector2 GetPointC() const;
+    CGUL::Float32 GetOrientation() const;
 
     CGUL::Vector2 GetClosestPoint(const CGUL::Vector2& position) const;
 

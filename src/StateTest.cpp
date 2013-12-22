@@ -3,6 +3,7 @@
 #include "AxisAlignedBox.hpp"
 #include "OrientedBox.hpp"
 #include "Line.hpp"
+#include "Triangle.hpp"
 
 StateTest::StateTest() :
     drag(NULL)
@@ -22,7 +23,9 @@ void StateTest::Enter()
 
     objects.push_back(new AxisAlignedBox(Vector2(100, 100), Vector2(50, 50)));
     objects.push_back(new OrientedBox(Vector2(150, 150), Vector2(50, 50), 90));
-    objects.push_back(new Circle(Vector2(350, 350), 90));
+    objects.push_back(new Circle(Vector2(250, 350), 90, 0));
+    //objects.push_back(new Triangle(Vector2(400, 300), Vector2(-25, 0), Vector2(0, 50), Vector2(25, 0), 0));
+    objects.push_back(new Triangle(Vector2(400, 300), Vector2(-20, 0), Vector2(0, 40), Vector2(20, 0), 0));
 }
 
 void StateTest::Update(CGUL::Float32 deltaTime)
@@ -39,6 +42,9 @@ void StateTest::Update(CGUL::Float32 deltaTime)
     OrientedBox* wee = (OrientedBox*)objects[1];
     wee->orientation += deltaTime * 3;
     wee->halfExtents = Vector2(75, 75);
+
+    Circle* circle = (Circle*)objects[2];
+    circle->orientation += deltaTime * 3;
 
     for (CGUL::Vector< Collision* >::iterator itr = objects.begin(); itr != objects.end(); itr++)
     {

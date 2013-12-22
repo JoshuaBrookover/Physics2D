@@ -32,6 +32,7 @@ struct OrientedBox : public Collision
     bool CollidingAxisAlignedBox(const AxisAlignedBox& other) const;
     bool CollidingOrientedBox(const OrientedBox& other) const;
     bool CollidingLine(const Line& other) const;
+    bool CollidingTriangle(const Triangle& other) const;
 
     void Draw() const;
 };

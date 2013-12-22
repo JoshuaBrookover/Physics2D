@@ -6,6 +6,7 @@ struct Circle;
 struct AxisAlignedBox;
 struct OrientedBox;
 struct Line;
+struct Triangle;
 
 extern Render* render;
 
@@ -25,12 +26,17 @@ struct Collision
     static bool CheckCircleAndAxisAlignedBox(const Circle& circle, const AxisAlignedBox& box);
     static bool CheckCircleAndOrientedBox(const Circle& circle, const OrientedBox& box);
     static bool CheckCircleAndLine(const Circle& circle, const Line& line);
+    static bool CheckCircleAndTriangle(const Circle& circle, const Triangle& triangle);
     static bool CheckAxisAlignedBoxAndAxisAlignedBox(const AxisAlignedBox& a, const AxisAlignedBox& b);
     static bool CheckAxisAlignedBoxAndOrientedBox(const AxisAlignedBox& aabb, const OrientedBox& obb);
     static bool CheckAxisAlignedBoxAndLine(const AxisAlignedBox& box, const Line& line);
+    static bool CheckAxisAlignedBoxAndTriangle(const AxisAlignedBox& box, const Triangle& triangle);
     static bool CheckOrientedBoxAndOrientedBox(const OrientedBox& a, const OrientedBox& b);
     static bool CheckOrientedBoxAndLine(const OrientedBox& box, const Line& line);
+    static bool CheckOrientedBoxAndTriangle(const OrientedBox& box, const Triangle& triangle);
     static bool CheckLineAndLine(const Line& a, const Line& b);
+    static bool CheckLineAndTriangle(const Line& line, const Triangle& triangle);
+    static bool CheckTriangleAndTriangle(const Triangle& a, const Triangle& b);
 
     CGUL::Enum type;
     CGUL::Color color;
@@ -52,6 +58,7 @@ struct Collision
     virtual bool CollidingAxisAlignedBox(const AxisAlignedBox& other) const = 0;
     virtual bool CollidingOrientedBox(const OrientedBox& other) const = 0;
     virtual bool CollidingLine(const Line& other) const = 0;
+    virtual bool CollidingTriangle(const Triangle& other) const = 0;
 
     bool Colliding(const Collision* other) const;
 

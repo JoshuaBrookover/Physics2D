@@ -4,6 +4,7 @@
 #include "AxisAlignedBox.hpp"
 #include "OrientedBox.hpp"
 #include "Line.hpp"
+#include "Triangle.hpp"
 
 using namespace CGUL;
 
@@ -13,7 +14,7 @@ void Collision::ProjectionOnAxis(const Vector2* points, const Size count, const 
     point = points[0];
     Float32 dotProduct = Vector2::DotProduct(axis, point);
     *min = *max = dotProduct;
-    for (Byte i = 1; i < count; i++)
+    for (Size i = 1; i < count; i++)
     {
         point = points[i];
 
@@ -53,6 +54,12 @@ bool Collision::CheckCircleAndLine(const Circle& circle, const Line& line)
     return (CGUL::Vector2::DistanceSquared(circle.position, closestPoint) < CGUL::Math::Sqr(circle.radius));
 }
 
+bool Collision::CheckCircleAndTriangle(const Circle& circle, const Triangle& triangle)
+{
+    // TODO
+    return false;
+}
+
 bool Collision::CheckAxisAlignedBoxAndAxisAlignedBox(const AxisAlignedBox& a, const AxisAlignedBox& b)
 {
     CGUL::Vector2 difference = a.position - b.position;
@@ -81,6 +88,12 @@ bool Collision::CheckAxisAlignedBoxAndLine(const AxisAlignedBox& box, const Line
     return false;
 }
 
+bool Collision::CheckAxisAlignedBoxAndTriangle(const AxisAlignedBox& box, const Triangle& triangle)
+{
+    // TODO
+    return false;
+}
+
 bool Collision::CheckOrientedBoxAndOrientedBox(const OrientedBox& a, const OrientedBox& b)
 {
     Vector2 axes[] =
@@ -99,7 +112,25 @@ bool Collision::CheckOrientedBoxAndLine(const OrientedBox& box, const Line& line
     return false;
 }
 
+bool Collision::CheckOrientedBoxAndTriangle(const OrientedBox& box, const Triangle& triangle)
+{
+    // TODO
+    return false;
+}
+
 bool Collision::CheckLineAndLine(const Line& a, const Line& b)
+{
+    // TODO
+    return false;
+}
+
+bool Collision::CheckLineAndTriangle(const Line& line, const Triangle& triangle)
+{
+    // TODO
+    return false;
+}
+
+bool Collision::CheckTriangleAndTriangle(const Triangle& a, const Triangle& b)
 {
     // TODO
     return false;

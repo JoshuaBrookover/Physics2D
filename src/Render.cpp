@@ -167,6 +167,30 @@ void Render::MakeLine()
     GL::BindVertexArray(0);
 }
 
+void Render::MakeTriangle()
+{
+    using namespace CGUL;
+
+    // Setup the buffer data
+    Vector2 trianglePositions[] = { Vector2(0, 0), Vector2(1, 1), Vector2(2, 2) };
+    //Vector2 trianglePositions[] = { Vector2(-20, 0), Vector2(0, 40), Vector2(20, 0) };
+
+    // Create the vertex array object
+    GL::GenVertexArrays(1, &vertexArrayTriangle);
+    GL::BindVertexArray(vertexArrayTriangle);
+
+    // Setup the position buffer and attach it to the vertex array
+    UInt buffer1;
+    GL::GenBuffers(1, &buffer1);
+    GL::BindBuffer(GL_ARRAY_BUFFER, buffer1);
+    GL::BufferData(GL_ARRAY_BUFFER, 3 * sizeof(Vector2), trianglePositions, GL_STATIC_DRAW);
+    GL::VertexAttribPointer(GL::POSITION1, 2, GL_FLOAT, false, 0, 0);
+    GL::EnableVertexAttribArray(GL::POSITION1);
+
+    // All done
+    GL::BindVertexArray(0);
+}
+
 Render::Render(CGUL::Window* window) :
     window(window),
     screenSpace(0, 0, 800, 600)
@@ -178,6 +202,7 @@ Render::Render(CGUL::Window* window) :
     MakeBox();
     MakeCircle();
     MakeLine();
+    MakeTriangle();
 }
 
 void Render::Update(State* state, CGUL::Float32 deltaTime)
@@ -271,6 +296,26 @@ void Render::Circle(const CGUL::Vector2& position, CGUL::Float32 radius, const C
     GL::BindVertexArray(0);
 }
 
+void Render::Circle(const CGUL::Vector2& position, CGUL::Float32 radius, CGUL::Float32 orientation, const CGUL::Color& color)
+{
+    using namespace CGUL;
+
+    if (doNotDraw)
+    {
+        return;
+    }
+
+    Matrix model;
+    model = model * Matrix::MakeScaling(Vector2(radius, radius));
+    model = model * Matrix::MakeRotation(orientation);
+    model = model * Matrix::MakeTranslation(position);
+    GL::UniformMatrix4fv(GL::GetUniformLocation(shaderProgram, "modelMatrix"), 1, false, model.GetData());
+    GL::Uniform4f(GL::GetUniformLocation(shaderProgram, "color"), color);
+    GL::BindVertexArray(vertexArrayCircle);
+    GL::DrawArrays(GL_TRIANGLE_FAN, 0, circlePrecision + 2);
+    GL::BindVertexArray(0);
+}
+
 void Render::Line(const CGUL::Vector2& start, const CGUL::Vector2& end, const CGUL::Color& color)
 {
     using namespace CGUL;
@@ -288,6 +333,28 @@ void Render::Line(const CGUL::Vector2& start, const CGUL::Vector2& end, const CG
     GL::Uniform2fv(GL::GetUniformLocation(shaderProgram, "positions"), 2, positions);
     GL::BindVertexArray(vertexArrayLine);
     GL::DrawArrays(GL_LINES, 0, 2);
+    GL::BindVertexArray(0);
+    GL::Uniform1i(GL::GetUniformLocation(shaderProgram, "positionArray"), 0);
+}
+
+void Render::Triangle(const CGUL::Vector2& position, const CGUL::Vector2& pointA, const CGUL::Vector2& pointB, const CGUL::Vector2& pointC, const CGUL::Color& color)
+{
+    using namespace CGUL;
+
+    if (doNotDraw)
+    {
+        return;
+    }
+
+    Matrix model;
+    model = model * Matrix::MakeTranslation(position);
+    GL::UniformMatrix4fv(GL::GetUniformLocation(shaderProgram, "modelMatrix"), 1, false, model.GetData());
+    GL::Uniform4f(GL::GetUniformLocation(shaderProgram, "color"), color);
+    GL::Uniform1i(GL::GetUniformLocation(shaderProgram, "positionArray"), 1);
+    CGUL::Vector2 positions[3] = { pointA, pointB, pointC };
+    GL::Uniform2fv(GL::GetUniformLocation(shaderProgram, "positions"), 3, positions);
+    GL::BindVertexArray(vertexArrayTriangle);
+    GL::DrawArrays(GL_TRIANGLES, 0, 3);
     GL::BindVertexArray(0);
     GL::Uniform1i(GL::GetUniformLocation(shaderProgram, "positionArray"), 0);
 }

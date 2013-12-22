@@ -9,9 +9,10 @@ struct Circle : public Collision
 {
     CGUL::Vector2 position;
     CGUL::Float32 radius;
+    CGUL::Float32 orientation;
 
     Circle();
-    Circle(const CGUL::Vector2& position, CGUL::Float32 radius);
+    Circle(const CGUL::Vector2& position, CGUL::Float32 radius, CGUL::Float32 orientation);
 
     void SetPosition(const CGUL::Vector2& position);
     void SetRadius(CGUL::Float32 radius);
@@ -29,6 +30,7 @@ struct Circle : public Collision
     bool CollidingAxisAlignedBox(const AxisAlignedBox& other) const;
     bool CollidingOrientedBox(const OrientedBox& other) const;
     bool CollidingLine(const Line& other) const;
+    bool CollidingTriangle(const Triangle& other) const;
 
     void Draw() const;
 };

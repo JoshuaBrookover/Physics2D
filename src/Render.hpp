@@ -5,12 +5,13 @@ class State;
 
 class Render
 {
-    static const CGUL::UInt32 circlePrecision = 32;
+    static const CGUL::UInt32 circlePrecision = 16;
 
     CGUL::UInt32 shaderProgram;
     CGUL::UInt32 vertexArrayBox;
     CGUL::UInt32 vertexArrayCircle;
     CGUL::UInt32 vertexArrayLine;
+    CGUL::UInt32 vertexArrayTriangle;
 
     CGUL::Window* window;
     CGUL::OpenGL::Context context;
@@ -23,6 +24,7 @@ class Render
     void MakeBox();
     void MakeCircle();
     void MakeLine();
+    void MakeTriangle();
 public:
     Render(CGUL::Window* window);
 
@@ -35,7 +37,9 @@ public:
     void Box(const CGUL::Vector2& position, const CGUL::Vector2& size, const CGUL::Color& color);
     void Box(const CGUL::Vector2& position, const CGUL::Vector2& size, CGUL::Float32 orientation, const CGUL::Color& color);
     void Circle(const CGUL::Vector2& position, CGUL::Float32 radius, const CGUL::Color& color);
+    void Circle(const CGUL::Vector2& position, CGUL::Float32 radius, CGUL::Float32 orientation, const CGUL::Color& color);
     void Line(const CGUL::Vector2& start, const CGUL::Vector2& end, const CGUL::Color& color);
+    void Triangle(const CGUL::Vector2& position, const CGUL::Vector2& pointA, const CGUL::Vector2& pointB, const CGUL::Vector2& pointC, const CGUL::Color& color);
 
     void SetDoNotDraw(CGUL::Boolean draw);
 };

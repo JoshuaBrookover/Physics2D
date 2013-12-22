@@ -121,6 +121,11 @@ bool OrientedBox::CollidingLine(const Line& other) const
     return CheckOrientedBoxAndLine(*this, other);
 }
 
+bool OrientedBox::CollidingTriangle(const Triangle& other) const
+{
+    return CheckOrientedBoxAndTriangle(*this, other);
+}
+
 void OrientedBox::Draw() const
 {
     render->Box(position, halfExtents * 2, orientation, color);

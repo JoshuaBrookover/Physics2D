@@ -87,6 +87,11 @@ bool AxisAlignedBox::CollidingLine(const Line& other) const
     return CheckAxisAlignedBoxAndLine(*this, other);
 }
 
+bool AxisAlignedBox::CollidingTriangle(const Triangle& other) const
+{
+    return CheckAxisAlignedBoxAndTriangle(*this, other);
+}
+
 void AxisAlignedBox::Draw() const
 {
     render->Box(position, halfExtents * 2, color);

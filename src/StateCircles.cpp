@@ -10,7 +10,7 @@ struct MovingCircle : public Circle
     }
 
     MovingCircle(const CGUL::Vector2& position, CGUL::Float32 radius, const CGUL::Vector2& velocity) :
-        Circle(position, radius),
+        Circle(position, radius, 0),
         velocity(velocity)
     {
     }

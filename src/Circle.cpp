@@ -6,14 +6,16 @@
 
 Circle::Circle() :
     Collision(Collision::CIRCLE),
-    radius(0)
+    radius(0),
+    orientation(0)
 {
 }
 
-Circle::Circle(const CGUL::Vector2& position, CGUL::Float32 radius) :
+Circle::Circle(const CGUL::Vector2& position, CGUL::Float32 radius, CGUL::Float32 orientation) :
     Collision(Collision::CIRCLE),
     position(position),
-    radius(radius)
+    radius(radius),
+    orientation(orientation)
 {
 }
 
@@ -52,7 +54,10 @@ CGUL::Vector2 Circle::GetClosestPoint(const CGUL::Vector2& position) const
 
 CGUL::Matrix Circle::GetWorldMatrix() const
 {
-    return CGUL::Matrix::MakeTranslation(position);
+    CGUL::Matrix matrix;
+    matrix = matrix * CGUL::Matrix::MakeRotation(orientation);
+    matrix = matrix * CGUL::Matrix::MakeTranslation(position);
+    return matrix;
 }
 
 void Circle::ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const
@@ -82,7 +87,12 @@ bool Circle::CollidingLine(const Line& other) const
     return CheckCircleAndLine(*this, other);
 }
 
+bool Circle::CollidingTriangle(const Triangle& other) const
+{
+    return CheckCircleAndTriangle(*this, other);
+}
+
 void Circle::Draw() const
 {
-    render->Circle(position, radius, color);
+    render->Circle(position, radius, orientation, color);
 }
