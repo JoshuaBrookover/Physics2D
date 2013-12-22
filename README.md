@@ -6,7 +6,7 @@ Utilizes and remains consistent with the [C++ General Utility Library (CGUL)](ht
 
 Goals
 =====
-* [Collision detection](#collision-detection) between various trivial 2D primitives (AABB, OBB, Circle, Triangle, Line Segment/Ray, etc)
+* [Collision detection](#collision-detection) between various trivial 2D primitives
 * [Closest point](#closest-point) algorithms
 * "Complex" objects built from trivial primitives
 * Triangulization from convex and concave primitives
@@ -31,6 +31,7 @@ Below is a matrix of supported collision algorithms between trivial 2D primitive
 __Planned types:__
 * Triangles
 * Ovals ?
+* Points
 
 Closest Point
 =====
@@ -38,6 +39,7 @@ Closest point algorithms are implemented for the following types:
 * Circle
 * AABB
 * OBB
+* Line
 
 Requirements
 =====
