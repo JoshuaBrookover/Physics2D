@@ -21,14 +21,14 @@ Collision Detection
 =====
 Below is a matrix of supported collision algorithms between trivial 2D primitives.
 
-|                | Circle             | AABB               | OBB                | Line | Triangle | Point              |
-|:--------------:|:-------------------:|:------------------:|:-----------------:|:----:|:--------:|:------------------:|
-| __Circle__     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |      |          |                    |
-| __AABB__       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |      |          |                    |
-| __OBB__        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |      |          |                    |
-| __Line__       |                    |                    |                    |      |          |                    |
-| __Triangle__   |                    |                    |                    |      |          |                    |
-| __Point__      |                    |                    |                    |      |          | :heavy_check_mark: |
+|                | Circle             | AABB               | OBB                | Line               | Triangle           | Point              |
+|:--------------:|:-------------------:|:------------------:|:-----------------:|:------------------:|:------------------:|:------------------:|
+| __Circle__     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |                    |                    |                    |
+| __AABB__       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |                    |                    |                    |
+| __OBB__        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |                    |                    |                    |
+| __Line__       |                    |                    |                    |                    |                    |                    |
+| __Triangle__   |                    |                    |                    |                    |                    | :heavy_check_mark: |
+| __Point__      |                    |                    |                    |                    | :heavy_check_mark: | :heavy_check_mark: |
 
 __Planned types:__
 * Ovals ?
