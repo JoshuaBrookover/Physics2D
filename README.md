@@ -21,17 +21,17 @@ Collision Detection
 =====
 Below is a matrix of supported collision algorithms between trivial 2D primitives.
 
-|                | Circle             | AABB               | OBB                | Line | Triangle |
-|:--------------:|:-------------------:|:------------------:|:-----------------:|:----:|:--------:|
-| __Circle__     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |      |          |
-| __AABB__       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |      |          |
-| __OBB__        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |      |          |
-| __Line__       |                    |                    |                    |      |          |
-| __Triangle__   |                    |                    |                    |      |          |
+|                | Circle             | AABB               | OBB                | Line | Triangle | Point |
+|:--------------:|:-------------------:|:------------------:|:-----------------:|:----:|:--------:|:-----:|
+| __Circle__     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |      |          |       |
+| __AABB__       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |      |          |       |
+| __OBB__        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |      |          |       |
+| __Line__       |                    |                    |                    |      |          |       |
+| __Triangle__   |                    |                    |                    |      |          |       |
+| __Point__      |                    |                    |                    |      |          |       |
 
 __Planned types:__
 * Ovals ?
-* Points
 
 Closest Point
 =====
@@ -40,6 +40,7 @@ Closest point algorithms are implemented for the following types:
 * AABB
 * OBB
 * Line
+* Point
 
 Requirements
 =====
