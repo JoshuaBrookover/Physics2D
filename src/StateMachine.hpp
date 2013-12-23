@@ -27,15 +27,21 @@ class StateMachine
     CGUL::Byte buttons[256];
 
     CGUL::SCoord32 mousePosition;
+
+    CGUL::UInt32 banner;
+    CGUL::UCoord32 bannerSize;
 public:
     StateMachine();
     ~StateMachine();
 
     void ChangeState(State* newState);
 
+    void SetTitle(const CGUL::String& title);
+
     void Initialize();
     bool IsRunning() const;
     void Update();
+    void Draw(CGUL::Float32 deltaTime);
     void Reset();
     void Exit();
 

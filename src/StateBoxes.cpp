@@ -18,7 +18,7 @@ StateBoxes::~StateBoxes()
 void StateBoxes::Enter()
 {
     render->SetClearColor(CGUL::Colors::darkBlue);
-    window->SetTitle(U8("Boxes - Physics Stuff by Joshua \"jalb\" Brookover"));
+    stateMachine->SetTitle(U8("Boxes"));
 }
 
 void StateBoxes::Update(CGUL::Float32 deltaTime)

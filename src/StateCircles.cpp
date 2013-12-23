@@ -27,7 +27,7 @@ StateCircles::~StateCircles()
 void StateCircles::Enter()
 {
     render->SetClearColor(CGUL::Colors::darkBlue);
-    window->SetTitle(U8("Circles - Physics Stuff by Joshua \"jalb\" Brookover"));
+    stateMachine->SetTitle(U8("Circles"));
 
     CGUL::Random random;
     for (int i = 0; i < 10; i++)

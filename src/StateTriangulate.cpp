@@ -172,7 +172,7 @@ StateTriangulate::~StateTriangulate()
 void StateTriangulate::Enter()
 {
     render->SetClearColor(CGUL::Colors::darkBlue);
-    window->SetTitle(U8("Triangulate - Physics Stuff by Joshua \"jalb\" Brookover"));
+    stateMachine->SetTitle(U8("Triangulate"));
 }
 
 void StateTriangulate::Update(CGUL::Float32 deltaTime)

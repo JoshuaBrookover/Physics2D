@@ -39,7 +39,8 @@ void StateMachine::MouseMoveEvent(const CGUL::WindowMouseMoveEvent& event, void*
 
 StateMachine::StateMachine() :
     currentState(NULL),
-    queuedState(NULL)
+    queuedState(NULL),
+    banner(0)
 {
     render = NULL;
     CGUL::Memory::ZeroData(keys, 256);
@@ -52,6 +53,11 @@ StateMachine::~StateMachine()
 void StateMachine::ChangeState(State* newState)
 {
     queuedState = newState;
+}
+
+void StateMachine::SetTitle(const CGUL::String& title)
+{
+    window.SetTitle(title + " - Physics2D");
 }
 
 void StateMachine::Initialize()
@@ -68,6 +74,16 @@ void StateMachine::Initialize()
     window.onMouseMove.AddEvent(MouseMoveEvent, this);
 
     render = new Render(&window);
+
+    try
+    {
+        banner = render->LoadSprite("github.png", &bannerSize);
+    }
+    catch (...)
+    {
+        std::cout << "Could not load banner :(" << std::endl;
+        banner = 0;
+    }
 
     timer.Start();
 }
@@ -145,7 +161,18 @@ void StateMachine::Update()
     }
     CGUL::Float64 deltaTime = timer.GetDeltaTime();
     CGUL::Window::Update();
-    render->Update(currentState, (CGUL::Float32)deltaTime);
+    render->Update(currentState, this, (CGUL::Float32)deltaTime);
+}
+
+void StateMachine::Draw(CGUL::Float32 deltaTime)
+{
+    if (banner != 0)
+    {
+        CGUL::Vector2 pos = CGUL::Vector2(800, 0);
+        pos.x -= bannerSize.x;
+
+        render->Sprite(banner, pos, bannerSize);
+    }
 }
 
 void StateMachine::Reset()

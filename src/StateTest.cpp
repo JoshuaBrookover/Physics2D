@@ -19,7 +19,7 @@ void StateTest::Enter()
     using namespace CGUL;
 
     render->SetClearColor(CGUL::Colors::darkBlue);
-    window->SetTitle(U8("Test - Physics Stuff by Joshua \"jalb\" Brookover"));
+    stateMachine->SetTitle(U8("Test"));
 
     objects.push_back(new AxisAlignedBox(Vector2(100, 100), Vector2(50, 50)));
     objects.push_back(new OrientedBox(Vector2(150, 150), Vector2(50, 50), 90));

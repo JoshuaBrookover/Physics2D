@@ -1,5 +1,6 @@
 #include "Render.hpp"
 #include "State.hpp"
+#include "StateMachine.hpp"
 #include <GL/glew.h>
 
 void Render::MakeShader()
@@ -16,12 +17,19 @@ void Render::MakeShader()
     "#version 120\n"
     "uniform mat4 orthoMatrix;\n"
     "uniform mat4 modelMatrix;\n"
-    "uniform int positionArray;\n"
+    "uniform int shaderType;\n" // 0 = geometry, 1 = repositioned geometry, 2 = texture
     "uniform vec2 positions[20];\n"
     "attribute vec2 vertPosition;\n"
+    "attribute vec2 vertTexCoord;\n"
+    " varying vec2 fragTexCoord;\n"
     "void main(void)\n"
     "{\n"
-    "    if (positionArray == 1)\n"
+    "    if (shaderType == 2)\n"
+    "    {\n"
+    "        gl_Position = (orthoMatrix * modelMatrix) * vec4(vertPosition, 0.0, 1.0);\n"
+    "        fragTexCoord = vertTexCoord;\n"
+    "    }\n"
+    "    else if (shaderType == 1)\n"
     "    {\n"
     "        gl_Position = (orthoMatrix * modelMatrix) * vec4(positions[int(vertPosition.x)], 0.0, 1.0);\n"
     "    }\n"
@@ -34,9 +42,18 @@ void Render::MakeShader()
     "#version 120\n"
     "uniform sampler2D texture;\n"
     "uniform vec4 color;\n"
+    "uniform int shaderType;\n"
+    "varying vec2 fragTexCoord;\n"
     "void main(void)\n"
     "{\n"
-    "    gl_FragColor = color;\n"
+    "    if (shaderType == 2)\n"
+    "    {\n"
+    "        gl_FragColor = texture2D(texture, fragTexCoord);\n"
+    "    }\n"
+    "    else\n"
+    "    {\n"
+    "        gl_FragColor = color;\n"
+    "    }\n"
     "}\n");
 
     // Compile the shaders
@@ -65,7 +82,7 @@ void Render::MakeShader()
 
     // Setup the attributes
     GL::BindAttribLocation(shaderProgram, GL::POSITION1, "vertPosition");
-    //GL::BindAttribLocation(shaderProgram, GL::TEXCOORD1, "vertTexCoord");
+    GL::BindAttribLocation(shaderProgram, GL::TEXCOORD1, "vertTexCoord");
 
     // Link the program
     GL::AttachShader(shaderProgram, vertexShader);
@@ -87,6 +104,38 @@ void Render::MakeShader()
         throw FatalException(U8("Failed to validate program:\n") + log);
     }
 
+}
+
+void Render::MakeSprite()
+{
+    using namespace CGUL;
+
+    // Setup the buffer data
+    Vector2 spritePositions[] = { Vector2(0.0f, 0.0f), Vector2(0.0f, 1.0f), Vector2(1.0f, 1.0f), Vector2(1.0f, 0.0f) };
+    Vector2 spriteTexCoords[] = { Vector2(0.0f, 1.0f), Vector2(0.0f, 0.0f), Vector2(1.0f, 0.0f), Vector2(1.0f, 1.0f) };
+
+    // Create the vertex array object
+    GL::GenVertexArrays(1, &vertexArraySprite);
+    GL::BindVertexArray(vertexArraySprite);
+
+    // Setup the position buffer and attach it to the vertex array
+    UInt buffer1;
+    GL::GenBuffers(1, &buffer1);
+    GL::BindBuffer(GL_ARRAY_BUFFER, buffer1);
+    GL::BufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vector2), spritePositions, GL_STATIC_DRAW);
+    GL::VertexAttribPointer(GL::POSITION1, 2, GL_FLOAT, false, 0, 0);
+    GL::EnableVertexAttribArray(GL::POSITION1);
+
+    // Setup the texcoord buffer and attach it to the vertex array
+    UInt buffer2;
+    GL::GenBuffers(1, &buffer2);
+    GL::BindBuffer(GL_ARRAY_BUFFER, buffer2);
+    GL::BufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vector2), spriteTexCoords, GL_STATIC_DRAW);
+    GL::VertexAttribPointer(GL::TEXCOORD1, 2, GL_FLOAT, false, 0, 0);
+    GL::EnableVertexAttribArray(GL::TEXCOORD1);
+
+    // All done
+    GL::BindVertexArray(0);
 }
 
 void Render::MakeBox()
@@ -198,14 +247,20 @@ Render::Render(CGUL::Window* window) :
     context.Create(window);
     context.ClearColor(CGUL::Colors::black);
 
+    CGUL::GL::BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    CGUL::GL::Enable(GL_BLEND);
+    CGUL::GL::Enable(GL_ALPHA_TEST);
+    CGUL::GL::Enable(GL_TEXTURE_2D);
+
     MakeShader();
+    MakeSprite();
     MakeBox();
     MakeCircle();
     MakeLine();
     MakeTriangle();
 }
 
-void Render::Update(State* state, CGUL::Float32 deltaTime)
+void Render::Update(State* state, StateMachine* stateMachine, CGUL::Float32 deltaTime)
 {
     using namespace CGUL;
 
@@ -219,6 +274,7 @@ void Render::Update(State* state, CGUL::Float32 deltaTime)
     {
         state->Update(deltaTime);
     }
+    stateMachine->Draw(deltaTime);
     GL::UseProgram(0);
     context.SwapBuffers();
 }
@@ -236,6 +292,61 @@ void Render::SetClearColor(const CGUL::Color& color)
 void Render::SetScreenSpace(const CGUL::Vector4& screenSpace)
 {
     this->screenSpace = screenSpace;
+}
+
+CGUL::UInt32 Render::LoadSprite(const CGUL::String& filename, CGUL::UCoord32* size)
+{
+    using namespace CGUL;
+
+    Image image;
+    image.Load(filename);
+
+    if (size != NULL)
+    {
+        *size = UCoord32(image.GetWidth(), image.GetHeight());
+    }
+
+    UInt texture;
+    GL::GenTextures(1, &texture);
+    GL::BindTexture(GL_TEXTURE_2D, texture);
+    GL::TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    GL::TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    GL::TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    GL::TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    GL::TexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    GL::PixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    GL::TexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.GetWidth(), image.GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.GetData<void>());
+    GL::BindTexture(GL_TEXTURE_2D, 0);
+
+    return texture;
+}
+
+void Render::FreeSprite(CGUL::UInt32 texture)
+{
+    // do stuff?
+}
+
+void Render::Sprite(CGUL::UInt32 texture, const CGUL::Vector2& position, const CGUL::Vector2& size)
+{
+    using namespace CGUL;
+
+    if (doNotDraw)
+    {
+        return;
+    }
+
+    Matrix model;
+    model = model * Matrix::MakeScaling(size);
+    model = model * Matrix::MakeTranslation(position);
+    GL::UniformMatrix4fv(GL::GetUniformLocation(shaderProgram, "modelMatrix"), 1, false, model.GetData());
+    GL::Uniform1i(GL::GetUniformLocation(shaderProgram, "shaderType"), 2);
+    GL::Uniform1i(GL::GetUniformLocation(shaderProgram, "texture"), 0);
+    GL::ActiveTexture(GL_TEXTURE0);
+    GL::BindTexture(GL_TEXTURE_2D, texture);
+    GL::BindVertexArray(vertexArraySprite);
+    GL::DrawArrays(GL_QUADS, 0, 4);
+    GL::Uniform1i(GL::GetUniformLocation(shaderProgram, "shaderType"), 0);
+    GL::BindVertexArray(0);
 }
 
 void Render::Box(const CGUL::Vector2& position, const CGUL::Vector2& size, const CGUL::Color& color)
@@ -328,13 +439,13 @@ void Render::Line(const CGUL::Vector2& start, const CGUL::Vector2& end, const CG
     Matrix model = Matrix::Identity();
     GL::UniformMatrix4fv(GL::GetUniformLocation(shaderProgram, "modelMatrix"), 1, false, model.GetData());
     GL::Uniform4f(GL::GetUniformLocation(shaderProgram, "color"), color);
-    GL::Uniform1i(GL::GetUniformLocation(shaderProgram, "positionArray"), 1);
+    GL::Uniform1i(GL::GetUniformLocation(shaderProgram, "shaderType"), 1);
     CGUL::Vector2 positions[2] = { start, end };
     GL::Uniform2fv(GL::GetUniformLocation(shaderProgram, "positions"), 2, positions);
     GL::BindVertexArray(vertexArrayLine);
     GL::DrawArrays(GL_LINES, 0, 2);
     GL::BindVertexArray(0);
-    GL::Uniform1i(GL::GetUniformLocation(shaderProgram, "positionArray"), 0);
+    GL::Uniform1i(GL::GetUniformLocation(shaderProgram, "shaderType"), 0);
 }
 
 void Render::Triangle(const CGUL::Vector2& position, const CGUL::Vector2& pointA, const CGUL::Vector2& pointB, const CGUL::Vector2& pointC, const CGUL::Color& color)
@@ -350,13 +461,13 @@ void Render::Triangle(const CGUL::Vector2& position, const CGUL::Vector2& pointA
     model = model * Matrix::MakeTranslation(position);
     GL::UniformMatrix4fv(GL::GetUniformLocation(shaderProgram, "modelMatrix"), 1, false, model.GetData());
     GL::Uniform4f(GL::GetUniformLocation(shaderProgram, "color"), color);
-    GL::Uniform1i(GL::GetUniformLocation(shaderProgram, "positionArray"), 1);
+    GL::Uniform1i(GL::GetUniformLocation(shaderProgram, "shaderType"), 1);
     CGUL::Vector2 positions[3] = { pointA, pointB, pointC };
     GL::Uniform2fv(GL::GetUniformLocation(shaderProgram, "positions"), 3, positions);
     GL::BindVertexArray(vertexArrayTriangle);
     GL::DrawArrays(GL_TRIANGLES, 0, 3);
     GL::BindVertexArray(0);
-    GL::Uniform1i(GL::GetUniformLocation(shaderProgram, "positionArray"), 0);
+    GL::Uniform1i(GL::GetUniformLocation(shaderProgram, "shaderType"), 0);
 }
 
 void Render::SetDoNotDraw(CGUL::Boolean draw)
