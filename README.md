@@ -21,15 +21,15 @@ Collision Detection
 =====
 Below is a matrix of supported collision algorithms between trivial 2D primitives.
 
-|                | Circle             | AABB               | OBB                | Line  |
-|:--------------:|:-------------------:|:------------------:|:------------------:|:-----:|
-| __Circle__     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |       |
-| __AABB__       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |       |
-| __OBB__        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |       |
-| __LINE__       |                    |                    |                    |       |
+|                | Circle             | AABB               | OBB                | Line | Triangle |
+|:--------------:|:-------------------:|:------------------:|:-----------------:|:----:|:--------:|
+| __Circle__     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |      |          |
+| __AABB__       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |      |          |
+| __OBB__        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |      |          |
+| __Line__       |                    |                    |                    |      |          |
+| __Triangle__   |                    |                    |                    |      |          |
 
 __Planned types:__
-* Triangles
 * Ovals ?
 * Points
 
