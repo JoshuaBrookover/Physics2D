@@ -180,8 +180,7 @@ bool Collision::CheckTriangleAndPoint(const Triangle& triangle, const Point& poi
 
 bool Collision::CheckPointAndPoint(const Point& a, const Point& b)
 {
-    // TODO
-    return false;
+    return (a.position == b.position);
 }
 
 Collision::Collision(Enum type) :
