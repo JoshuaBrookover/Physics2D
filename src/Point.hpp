@@ -5,19 +5,16 @@
 
 extern Render* render;
 
-struct AxisAlignedBox : public Collision
+struct Point : public Collision
 {
     CGUL::Vector2 position;
-    CGUL::Vector2 halfExtents;
 
-    AxisAlignedBox();
-    AxisAlignedBox(const CGUL::Vector2& position, const CGUL::Vector2& halfExtents);
+    Point();
+    Point(const CGUL::Vector2& position);
 
     void SetPosition(const CGUL::Vector2& position);
-    void SetHalfExtents(const CGUL::Vector2& halfExtents);
 
     CGUL::Vector2 GetPosition() const;
-    CGUL::Vector2 GetExtents() const;
 
     CGUL::Vector2 GetClosestPoint(const CGUL::Vector2& position) const;
 

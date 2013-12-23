@@ -92,6 +92,11 @@ bool Circle::CollidingTriangle(const Triangle& other) const
     return CheckCircleAndTriangle(*this, other);
 }
 
+bool Circle::CollidingPoint(const Point& other) const
+{
+    return CheckCircleAndPoint(*this, other);
+}
+
 void Circle::Draw() const
 {
     render->Circle(position, radius, orientation, color);

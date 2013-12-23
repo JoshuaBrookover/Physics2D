@@ -3,6 +3,7 @@
 #include "Circle.hpp"
 #include "AxisAlignedBox.hpp"
 #include "Line.hpp"
+#include "Point.hpp"
 
 OrientedBox::OrientedBox() :
     Collision(Collision::ORIENTED_BOX)
@@ -124,6 +125,11 @@ bool OrientedBox::CollidingLine(const Line& other) const
 bool OrientedBox::CollidingTriangle(const Triangle& other) const
 {
     return CheckOrientedBoxAndTriangle(*this, other);
+}
+
+bool OrientedBox::CollidingPoint(const Point& other) const
+{
+    return CheckOrientedBoxAndPoint(*this, other);
 }
 
 void OrientedBox::Draw() const

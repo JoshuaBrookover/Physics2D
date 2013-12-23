@@ -107,6 +107,11 @@ bool Line::CollidingTriangle(const Triangle& other) const
     return CheckLineAndTriangle(*this, other);
 }
 
+bool Line::CollidingPoint(const Point& other) const
+{
+    return CheckLineAndPoint(*this, other);
+}
+
 void Line::Draw() const
 {
     render->Line(start, end, color);

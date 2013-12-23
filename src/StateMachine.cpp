@@ -5,6 +5,7 @@
 #include "StateBoxes.hpp"
 #include "StateCircles.hpp"
 #include "StateTest.hpp"
+#include "StateTriangulate.hpp"
 
 Render* render;
 
@@ -96,6 +97,10 @@ void StateMachine::Update()
     else if (IsKeyPressed('3'))
     {
         ChangeState(new StateTest);
+    }
+    else if (IsKeyPressed('4'))
+    {
+        ChangeState(new StateTriangulate);
     }
 
     for (CGUL::UInt32 i = 0; i < 256; i++)

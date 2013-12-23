@@ -39,6 +39,7 @@ struct Triangle : public Collision
     bool CollidingOrientedBox(const OrientedBox& other) const;
     bool CollidingLine(const Line& other) const;
     bool CollidingTriangle(const Triangle& other) const;
+    bool CollidingPoint(const Point& other) const;
 
     void Draw() const;
 };

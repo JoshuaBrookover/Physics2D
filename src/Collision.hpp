@@ -7,6 +7,7 @@ struct AxisAlignedBox;
 struct OrientedBox;
 struct Line;
 struct Triangle;
+struct Point;
 
 extern Render* render;
 
@@ -17,7 +18,9 @@ struct Collision
         CIRCLE,
         AXIS_ALIGNED_BOX,
         ORIENTED_BOX,
-        LINE
+        LINE,
+        TRIANGLE,
+        POINT
     };
 
     static void ProjectionOnAxis(const CGUL::Vector2* points, const CGUL::Size count, const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max);
@@ -27,16 +30,22 @@ struct Collision
     static bool CheckCircleAndOrientedBox(const Circle& circle, const OrientedBox& box);
     static bool CheckCircleAndLine(const Circle& circle, const Line& line);
     static bool CheckCircleAndTriangle(const Circle& circle, const Triangle& triangle);
+    static bool CheckCircleAndPoint(const Circle& circle, const Point& point);
     static bool CheckAxisAlignedBoxAndAxisAlignedBox(const AxisAlignedBox& a, const AxisAlignedBox& b);
     static bool CheckAxisAlignedBoxAndOrientedBox(const AxisAlignedBox& aabb, const OrientedBox& obb);
     static bool CheckAxisAlignedBoxAndLine(const AxisAlignedBox& box, const Line& line);
     static bool CheckAxisAlignedBoxAndTriangle(const AxisAlignedBox& box, const Triangle& triangle);
+    static bool CheckAxisAlignedBoxAndPoint(const AxisAlignedBox& box, const Point& point);
     static bool CheckOrientedBoxAndOrientedBox(const OrientedBox& a, const OrientedBox& b);
     static bool CheckOrientedBoxAndLine(const OrientedBox& box, const Line& line);
     static bool CheckOrientedBoxAndTriangle(const OrientedBox& box, const Triangle& triangle);
+    static bool CheckOrientedBoxAndPoint(const OrientedBox& box, const Point& point);
     static bool CheckLineAndLine(const Line& a, const Line& b);
     static bool CheckLineAndTriangle(const Line& line, const Triangle& triangle);
+    static bool CheckLineAndPoint(const Line& line, const Point& point);
     static bool CheckTriangleAndTriangle(const Triangle& a, const Triangle& b);
+    static bool CheckTriangleAndPoint(const Triangle& triangle, const Point& point);
+    static bool CheckPointAndPoint(const Point& a, const Point& b);
 
     CGUL::Enum type;
     CGUL::Color color;
@@ -59,6 +68,7 @@ struct Collision
     virtual bool CollidingOrientedBox(const OrientedBox& other) const = 0;
     virtual bool CollidingLine(const Line& other) const = 0;
     virtual bool CollidingTriangle(const Triangle& other) const = 0;
+    virtual bool CollidingPoint(const Point& point) const = 0;
 
     bool Colliding(const Collision* other) const;
 

@@ -5,6 +5,7 @@
 #include "OrientedBox.hpp"
 #include "Line.hpp"
 #include "Triangle.hpp"
+#include "Point.hpp"
 
 using namespace CGUL;
 
@@ -60,6 +61,12 @@ bool Collision::CheckCircleAndTriangle(const Circle& circle, const Triangle& tri
     return false;
 }
 
+bool Collision::CheckCircleAndPoint(const Circle& circle, const Point& point)
+{
+    // TODO
+    return false;
+}
+
 bool Collision::CheckAxisAlignedBoxAndAxisAlignedBox(const AxisAlignedBox& a, const AxisAlignedBox& b)
 {
     CGUL::Vector2 difference = a.position - b.position;
@@ -94,6 +101,12 @@ bool Collision::CheckAxisAlignedBoxAndTriangle(const AxisAlignedBox& box, const 
     return false;
 }
 
+bool Collision::CheckAxisAlignedBoxAndPoint(const AxisAlignedBox& box, const Point& point)
+{
+    // TODO
+    return false;
+}
+
 bool Collision::CheckOrientedBoxAndOrientedBox(const OrientedBox& a, const OrientedBox& b)
 {
     Vector2 axes[] =
@@ -118,6 +131,12 @@ bool Collision::CheckOrientedBoxAndTriangle(const OrientedBox& box, const Triang
     return false;
 }
 
+bool Collision::CheckOrientedBoxAndPoint(const OrientedBox& box, const Point& point)
+{
+    // TODO
+    return false;
+}
+
 bool Collision::CheckLineAndLine(const Line& a, const Line& b)
 {
     // TODO
@@ -130,7 +149,36 @@ bool Collision::CheckLineAndTriangle(const Line& line, const Triangle& triangle)
     return false;
 }
 
+bool Collision::CheckLineAndPoint(const Line& line, const Point& point)
+{
+    // TODO
+    return false;
+}
+
 bool Collision::CheckTriangleAndTriangle(const Triangle& a, const Triangle& b)
+{
+    // TODO
+    return false;
+}
+
+bool Collision::CheckTriangleAndPoint(const Triangle& triangle, const Point& point)
+{
+    Vector2 p = point.position, a = triangle.pointA, b = triangle.pointB, c = triangle.pointC;
+    float pab = Vector2::CrossProduct(p - a, b - a);
+    float pbc = Vector2::CrossProduct(p - b, c - b);
+    if (Math::Sign(pab) != Math::Sign(pbc))
+    {
+        return false;
+    }
+    float pca = Vector2::CrossProduct(p - c, a - c);
+    if (Math::Sign(pab) != Math::Sign(pca))
+    {
+        return false;
+    }
+    return true;
+}
+
+bool Collision::CheckPointAndPoint(const Point& a, const Point& b)
 {
     // TODO
     return false;

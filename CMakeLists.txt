@@ -12,6 +12,7 @@ add_executable(physics
     src/StateBoxes.cpp
     src/StateCircles.cpp
     src/StateTest.cpp
+    src/StateTriangulate.cpp
     src/Render.cpp
     src/Collision.cpp
     src/AxisAlignedBox.cpp
@@ -19,6 +20,7 @@ add_executable(physics
     src/Circle.cpp
     src/Line.cpp
     src/Triangle.cpp
+    src/Point.cpp
 )
 target_link_libraries(physics ${CGUL_LIBRARIES})
 cgul_bake_rpath(physics "$ORIGIN")

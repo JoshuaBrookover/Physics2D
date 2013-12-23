@@ -4,13 +4,13 @@
 #include "OrientedBox.hpp"
 
 Triangle::Triangle() :
-    Collision(Collision::CIRCLE),
+    Collision(Collision::TRIANGLE),
     orientation(0)
 {
 }
 
 Triangle::Triangle(const CGUL::Vector2& position, const CGUL::Vector2& pointA, const CGUL::Vector2& pointB, const CGUL::Vector2& pointC, CGUL::Float32 orientation) :
-    Collision(Collision::CIRCLE),
+    Collision(Collision::TRIANGLE),
     position(position),
     pointA(pointA),
     pointB(pointB),
@@ -31,7 +31,7 @@ CGUL::Vector2 Triangle::GetPosition() const
 
 CGUL::Vector2 Triangle::GetClosestPoint(const CGUL::Vector2& position) const
 {
-    return this->position;
+    return position;
 }
 
 void Triangle::ProjectionOnAxis(const CGUL::Vector2& axis, CGUL::Float32* min, CGUL::Float32* max) const
@@ -70,6 +70,11 @@ bool Triangle::CollidingLine(const Line& other) const
 bool Triangle::CollidingTriangle(const Triangle& other) const
 {
     return CheckTriangleAndTriangle(*this, other);
+}
+
+bool Triangle::CollidingPoint(const Point& other) const
+{
+    return CheckTriangleAndPoint(*this, other);
 }
 
 void Triangle::Draw() const
