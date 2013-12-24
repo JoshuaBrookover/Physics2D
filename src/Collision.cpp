@@ -57,8 +57,8 @@ bool Collision::CheckCircleAndLine(const Circle& circle, const Line& line)
 
 bool Collision::CheckCircleAndTriangle(const Circle& circle, const Triangle& triangle)
 {
-    // TODO
-    return false;
+    CGUL::Vector2 closestPoint = triangle.GetClosestPoint(circle.position);
+    return (CGUL::Vector2::DistanceSquared(circle.position, closestPoint) < CGUL::Math::Sqr(circle.radius));
 }
 
 bool Collision::CheckCircleAndPoint(const Circle& circle, const Point& point)
@@ -97,8 +97,19 @@ bool Collision::CheckAxisAlignedBoxAndLine(const AxisAlignedBox& box, const Line
 
 bool Collision::CheckAxisAlignedBoxAndTriangle(const AxisAlignedBox& box, const Triangle& triangle)
 {
-    // TODO
-    return false;
+    Vector2 side1 = triangle.pointA - triangle.pointB;
+    Vector2 side2 = triangle.pointB - triangle.pointC;
+    Vector2 side3 = triangle.pointC - triangle.pointA;
+
+    Vector2 axes[] =
+    {
+        Vector2::unitX,
+        Vector2::unitY,
+        Vector2::Normalized(side1.GetPerpendicular()),
+        Vector2::Normalized(side2.GetPerpendicular()),
+        Vector2::Normalized(side3.GetPerpendicular())
+    };
+    return box.CollidingOnAxes(triangle, axes, 5);
 }
 
 bool Collision::CheckAxisAlignedBoxAndPoint(const AxisAlignedBox& box, const Point& point)
@@ -127,8 +138,19 @@ bool Collision::CheckOrientedBoxAndLine(const OrientedBox& box, const Line& line
 
 bool Collision::CheckOrientedBoxAndTriangle(const OrientedBox& box, const Triangle& triangle)
 {
-    // TODO
-    return false;
+    Vector2 side1 = triangle.pointA - triangle.pointB;
+    Vector2 side2 = triangle.pointB - triangle.pointC;
+    Vector2 side3 = triangle.pointC - triangle.pointA;
+
+    Vector2 axes[] =
+    {
+        Vector2(Math::Cos(box.orientation), Math::Sin(box.orientation)),
+        Vector2(Math::Sin(box.orientation), -Math::Cos(box.orientation)),
+        Vector2::Normalized(side1.GetPerpendicular()),
+        Vector2::Normalized(side2.GetPerpendicular()),
+        Vector2::Normalized(side3.GetPerpendicular())
+    };
+    return box.CollidingOnAxes(triangle, axes, 5);
 }
 
 bool Collision::CheckOrientedBoxAndPoint(const OrientedBox& box, const Point& point)

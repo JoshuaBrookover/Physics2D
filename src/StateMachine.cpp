@@ -77,7 +77,7 @@ void StateMachine::Initialize()
 
     try
     {
-        banner = render->LoadSprite("github.png", &bannerSize);
+        banner = render->LoadSprite("banner.png", &bannerSize);
     }
     catch (...)
     {
@@ -95,7 +95,7 @@ bool StateMachine::IsRunning() const
 
 void StateMachine::Update()
 {
-    CGUL::Timer::Sleep(1);
+    CGUL::Timer::Sleep(16);
 
     if (render == NULL)
     {

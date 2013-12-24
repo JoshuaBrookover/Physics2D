@@ -25,7 +25,7 @@ void StateTest::Enter()
     objects.push_back(new OrientedBox(Vector2(150, 150), Vector2(50, 50), 90));
     objects.push_back(new Circle(Vector2(250, 350), 90, 0));
     //objects.push_back(new Triangle(Vector2(400, 300), Vector2(-25, 0), Vector2(0, 50), Vector2(25, 0), 0));
-    objects.push_back(new Triangle(Vector2(400, 300), Vector2(-20, 0), Vector2(0, 40), Vector2(20, 0), 0));
+    objects.push_back(new Triangle(Vector2(400, 200), Vector2(-60, 0), Vector2(0, 120), Vector2(60, 0), 0));
 }
 
 void StateTest::Update(CGUL::Float32 deltaTime)
