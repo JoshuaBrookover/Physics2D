@@ -1,6 +1,8 @@
 #pragma once
 #include <CGUL.hpp>
 
+#include <iostream>
+
 class State;
 class Render;
 
@@ -24,7 +26,7 @@ class StateMachine
         INPUT_HELD = 2
     };
     CGUL::Byte keys[256];
-    CGUL::Byte buttons[256];
+    CGUL::Byte buttons[3];
 
     CGUL::SCoord32 mousePosition;
 
